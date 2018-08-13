@@ -1,1 +1,23 @@
-<h3>Hello from GitHUB</h3>
+<html ng-app="helloWorldApp">
+  <head>
+      <title>HelloWorld app</title>
+  </head>
+  <body ng-controller="helloWorldController">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+       
+        <script>
+          var helloWorldApp = angular.module('helloWorldApp',[])
+          .controller('helloWorldController',function($scope){
+            $scope.Hello = 'Hello from AngularJS';
+          })
+
+
+        </script>
+        <div class="container">
+                <h2>{{"Angular Fundamnetal"}}</h2>
+                <h2>{{Hello}}</h2>
+        </div>
+
+  </body>
+
+</html>
