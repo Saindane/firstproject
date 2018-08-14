@@ -1,0 +1,24 @@
+<html ng-app="App">
+    <head>
+      <title>app</title>
+      <script src="angular/angular.min.js"></script>
+  </head>
+  <body>
+     <div class="container" ng-controller="pInformation">
+       <ul>
+         <li>{{person.firstName}}</li>
+         <li>{{person.lastName}}</li>
+         <li>{{person.age}}</li>
+         <li>{{person.dob}}</li>
+         <li>{{person.email}}</li>
+       </ul>
+     </div>
+      <div class="container" ng-controller="mInformation">
+        <ul><li>{{misc.info}}</li></ul>
+      </div>
+      <script type="text/javascript"src="myApp.js"></script>
+      <script type="text/javascript" src="controller1.js"></script>
+      <script type="text/javascript" src="controller2.js"></script>
+      
+  </body>
+</html>
