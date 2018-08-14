@@ -1,4 +1,4 @@
-angular.module('App').controller('pInformation',["$scope",function($scope){
+angular.module('App').controller('pInformationCtrl',["$scope",function($scope){
     $scope.person = {
         "firstName" : "LalitKumar",
         "lastName"  : "Saindane",
