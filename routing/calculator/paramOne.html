@@ -1,0 +1,35 @@
+<form name="myForm">
+    <table>
+        <tr>
+            <td>First Number</td>
+            <td><input type="text" name="number1" ng-model="number1" required ></td>
+            <td><span ng-show="myForm.number1.$touched && myForm.number1.$invalid">Oops! First Number field is required.</span></td>
+       </tr>
+       <tr>
+           <td>
+                   <!--Here is using of ng-options-->
+               <select ng-model="option" ng-options="item for item in options">
+               </select>
+           </td>
+       </tr>
+       <tr>
+           <td>Second Number</td>
+           <td><input type="text" name="number2" ng-model="number2" required ></td>
+           <td><span ng-show="myForm.number2.$touched && myForm.number2.$invalid">Oops! Second Number field is required.</span></td>
+
+       </tr>
+       <tr>
+           <td>				
+               <!--Here is using of ng-disabled-->
+                   <input type="submit"  ng-click="submit()"  ng-disabled="myForm.$invalid || myForm.$pristine"/>
+           </td>
+       </tr>
+       <!--Here is using of ngIf-->
+       <tr ng-if="myForm.$submitted ">
+           <td>Result</td>
+           <td>{{result}}</td>
+         
+       </tr>
+    </table>
+   </form>
+   

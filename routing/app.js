@@ -5,11 +5,19 @@ app.config(function ($routeProvider) {
         controller: 'display'
     })
     .when('/calculator', {
-        templateUrl: '/calculator.html',
+        templateUrl: 'calculator.html',
+        controller: 'calculateCtrl'
+    })
+    .when('/calculator/:paramNumber1', {
+        templateUrl: 'paramOne.html',
+        controller: 'calculateCtrl'
+    })
+    .when('/calculator/:paramNumber1/:paramNumber2', {
+        templateUrl: 'paramOne.html',
         controller: 'calculateCtrl'
     })
     .when('/personal', {
-        templateUrl: '/info.html',
+        templateUrl: 'info.html',
         controller: 'pInformationCtrl'
     });
 });
