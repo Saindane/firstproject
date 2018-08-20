@@ -1,0 +1,17 @@
+<html  ng-app="ngRoutingDemo">
+    <head>
+        <title>Route</title>
+        <script src="angular/angular.min.js"></script>
+        <script src="angular/angular-route.min.js"></script>
+        <script src="app.js"></script>
+    </head>
+    <body>
+    <h1>Hii from indexpage</h1>
+    <a href="#/calculator">Calculator</a>
+    <a href="#/personal">Personal Data</a>
+
+    <ng-view></ng-view>
+    <script src="profile/profilecontroller.js"></script>
+    <script src="calculator/controller.js"></script>
+     </body>
+</html>
