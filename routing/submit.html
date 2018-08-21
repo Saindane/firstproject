@@ -1,0 +1,24 @@
+<form name="myForm">
+    <table>
+        <tr>
+            <td>UserId</td>
+            <td><input type="text" name="userid" ng-model="userid" required> </td>
+            <td><span ng-show="myForm.userid.$touched && myForm.userid.$invalid">Oops! Please fill userId field is required.</span></td>
+            </tr>
+        <tr>
+            <td>Title</td>
+            <td><input type="text" name="title" ng-model="title" required> </td>
+            <td><span ng-show="myForm.title.$touched && myForm.title.$invalid">Oops! Please fill Title field is required.</span></td>
+        </tr>
+        <tr>
+            <td>Comment</td>
+            <td><input type="text" name="body" ng-model="body" required> </td>
+            <td><span ng-show="myForm.body.$touched && myForm.body.$invalid">Oops! Please fill Comment field is required.</span></td>
+        </tr>
+        <tr>
+            <td>
+                  <input type="submit"  ng-click="submit()"  ng-disabled="myForm.$invalid || myForm.$pristine"/>
+            </td>
+        </tr>
+    </table>
+</form>

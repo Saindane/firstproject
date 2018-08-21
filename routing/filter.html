@@ -1,0 +1,39 @@
+<html ng-app="myApp">
+    <head>
+        <title>Filters</title>
+        <script src="angular/angular.min.js"></script>
+        <script>
+         var app = angular.module("myApp", []);
+         app.filter('myfilter', function() {
+    return function(x) {
+        var i, c, txt = "";
+        for (i = 0; i < x.length; i++) {
+            c = x[i];
+            if (i % 2 == 0) {
+                c = c.toUpperCase();
+            }
+            txt += c;
+        }
+        return txt;
+    };
+});
+      app.controller("myCtrl", function($scope) {
+       $scope.records = [
+        "Alfreds Futterkiste",
+        "Berglunds snabbköp",
+        "Centro comercial Moctezuma",
+        "Ernst Handel","Sachin","Virat","Rahul","Dada","Aza","Alex"
+    ]
+      });
+        </script>
+    </head>
+    <body ng-controller="myCtrl">
+       <input type="text" ng-model="inputtext">
+        <ul>
+            <li ng-repeat = "player in records ">
+               {{player} | myfilter}
+            </li>
+        </ul>
+    </body>
+   
+</html>

@@ -8,6 +8,14 @@ app.config(function ($routeProvider) {
         templateUrl: 'calculator.html',
         controller: 'calculateCtrl'
     })
+    .when('/post', {
+        templateUrl: 'post.html',
+        controller: 'getDataCtrl'
+    })
+    .when('/post/submit', {
+        templateUrl: 'submit.html',
+        controller: 'postDataCtrl'
+    })
     .when('/calculator/:paramNumber1', {
         templateUrl: 'paramOne.html',
         controller: 'calculateCtrl'
@@ -19,5 +27,8 @@ app.config(function ($routeProvider) {
     .when('/personal', {
         templateUrl: 'info.html',
         controller: 'pInformationCtrl'
+    })
+    .otherwise({
+        template : "<h1>None</h1><p>Content Not Found</p>"
     });
 });

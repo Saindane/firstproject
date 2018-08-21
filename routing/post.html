@@ -1,0 +1,12 @@
+ <div ng-repeat="(key, value) in datas.data">
+ <!--<b>UserId:</b>{{value.userId}}<br> <b>Id:</b>{{value.id}}<br> <b>Title:</b>{{value.title}}<br> <b>Body:</b>{{value.body}}<br>
+   <input type="button" value="Delete" ng-click="delete($index)" >
+   <br>-->
+   <span ng-click="datas.data.splice($index, 1)">
+      <b>UserId:</b>{{value.userId}}<br> <b>Id:</b>{{value.id}}<br> <b>Title:</b>{{value.title}}<br> <b>Body:</b>{{value.body}}<br>
+      <button>Delete</button>
+   </span> 
+   <button ng-value="true">Delete</button>
+   <br>
+  </div>
+   
