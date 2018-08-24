@@ -1,0 +1,33 @@
+<form name="myForm"  ng-hide="click">
+        <table>
+            <tr>
+                <td>Id</td>
+                <td><input type="text" name="id" ng-model="id" required ></td>
+                <td><span ng-show="myForm.id.$touched && myForm.id.$invalid">Oops!Id field is required.</span></td>
+           </tr>
+           <tr>
+                <td>FirstName</td>
+                <td><input type="text" name="firstName" ng-model="firstName" required ></td>
+                <td><span ng-show="myForm.firstName.$touched && myForm.firstName.$invalid">Oops! First Number field is required.</span></td>
+           </tr>
+           <tr>
+                <td>LastName</td>
+                <td><input type="text" name="lastName" ng-model="lastName" required ></td>
+                <td><span ng-show="myForm.lastName.$touched && myForm.lastName.$invalid">Oops! Last Number field is required.</span></td>
+           </tr>
+           <tr>
+               <td>Avatar</td>
+               <td><input type="text" name="avatar" ng-model="avatar" required ></td>
+               <td><span ng-show="myForm.avatar.$touched && myForm.avatar.$invalid">Oops! Avatar field is required.</span></td>
+   
+           </tr>
+           <tr>
+               <td>				
+                   <!--Here is using of ng-disabled-->
+                       <input type="submit"  ng-click="update()"  ng-disabled="myForm.$invalid || myForm.$pristine"/>
+               </td>
+           </tr>
+    </table>
+</form>
+<h3 ng-show="success">Data Updated Sucessfully</h3>
+<h3 ng-show="error">Server side error Please try after sometime</h3>

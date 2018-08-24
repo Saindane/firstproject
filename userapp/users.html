@@ -1,0 +1,22 @@
+<table border="1" ng-init="get()" ng-show="displayTable">
+   <tr>
+     <th>Id</th>
+     <th>FirstName</th>
+     <th>LastName</th>
+     <th>Avatar</th>
+     <th colspan="3">Action</th>
+   </tr>
+   <tr ng-repeat="(key, value)  in users"> 
+     <td>{{value.id}}</td>
+     <td>{{value.first_name}}</td>
+     <td>{{value.last_name}}</td>
+     <td>{{value.avatar}}</td>
+     <td><a href = "#!user/{{value.id}}">View</a></td>
+     <td><a href = "#!user/{{value.id}}/update">Update</a></td>
+     <td><a href ng-click="delete(key)"  style="color:blue">Delete</a></td>
+
+   </tr>
+</table>
+
+<h2 ng-show="error">No Data Found</h2>
+
