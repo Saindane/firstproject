@@ -1,4 +1,4 @@
-var app =angular.module('ngRoutingDemo', ['ngRoute'])
+var app =angular.module('ngRoutingDemo', ['ngRoute','ngAnimate', 'ngSanitize', 'ui.bootstrap']);
 app.config(function ($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: 'users.html',
@@ -14,6 +14,10 @@ app.config(function ($routeProvider) {
     .when('/user/:id/update', {
         templateUrl: 'update.html',
         controller: 'userCtrl'
+    })
+    .when('/students', {
+        templateUrl: 'students.html',
+        controller: 'studentsCtrl'
     })
     .otherwise({
         template : "<h1>None</h1><p>Content Not Found</p>"

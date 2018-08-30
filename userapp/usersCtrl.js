@@ -25,6 +25,7 @@ app.controller("usersCtrl",['$scope','$http','userService', function($scope, $ht
      $scope.users.splice($scope.index, 1);    
   }
 
+
 }]);
 
 
