@@ -1,0 +1,122 @@
+<button type="button" class="btn btn-default" ng-click="open()">ADD STUDENT</button>
+
+
+<table border="1" ng-if="datas.length > 0">
+    <tr>
+      <th>Id</th>
+      <th>FirstName</th>
+      <th>LastName</th>
+      <th>Dob</th>
+      <th>Class</th>
+      <th colspan="3">Action</th>
+    </tr>
+    <tr ng-repeat="(key,value) in datas"> 
+      <td>{{value.id}}</td>
+      <td>{{value.firstName}}</td>
+      <td>{{value.lastName}}</td>
+      <td>{{value.dob |date:'fullDate' }}</td>
+      <td>{{value.class}}</td>
+      <td>{{}}</td>
+
+    </tr>
+ </table>
+
+ 
+ <script type="text/ng-template" id="lalit.html">
+    <form class="form-horizontal" name="myForm">
+      <div class="modal-header">
+          <h3 class="modal-title" id="modal-title">Student Registration</h3>
+      </div>
+      <div class="modal-body" id="modal-body">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col-sm-12">
+
+                     <div class="form-group" ng-class="{'has-error':myForm.id.$touched && myForm.id.$invalid}">
+                        <label for="id">ID</label>
+                        <input type="text" class="form-control" id="id" ng-model="id" name="id" required/>
+                     </div>
+                     <span class="help-block" ng-show="myForm.id.$error.required && myForm.id.$touched"  style="color:red">Oops! Id field is required.</span>
+                     
+                     <div class="form-group" ng-class="{'has-error':myForm.firstName.$touched && myForm.firstName.$invalid}">
+                        <label for="firstName">First Name</label>
+                        <input type="text" class="form-control" id="firstName" ng-model="firstName" name ="firstName" required />
+                     </div>
+                     <span class="help-block" ng-show="myForm.firstName.$touched && myForm.firstName.$invalid" style="color:red">Oops! FirstName field is required.</span>
+
+                     <div class="form-group" ng-class="{'has-error':myForm.lastName.$touched && myForm.lastName.$invalid}">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" ng-model="lastName" name="lastName" required/>
+                     </div>
+                     <span class="help-block" ng-show="myForm.lastName.$touched && myForm.lastName.$invalid"  style="color:red">Oops! LastName field is required.</span>
+
+                     <div class="form-group">
+                        <label for="lastName">Date of Birth</label>
+                        <p class="input-group">
+                            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" style=" width : 200px;"/>
+                            <span class="input-group-btn">
+                              <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                          </p>                
+                     </div>
+
+                     <div class="form-group" ng-class="{'has-error':myForm.class.$touched && myForm.class.$invalid}">
+                        <label for="class">Class</label>
+                        <select ng-model="class" class="form-control" ng-options="item for item in classes" id="class" name="class" required></select>
+                     </div>
+                     <span class="help-block" ng-show="myForm.class.$touched && myForm.class.$invalid"  style="color:red">Oops! Class field is required.</span>
+                     
+                     <div class="form-group">
+                        <input type="submit" class="btn btn-default" id="submit" ng-click="submit()" ng-disabled="myForm.$invalid || myForm.$pristine"/>
+                     </div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+    </form>
+</script>
+
+
+
+
+<!--This is horizontal form-->
+        <!--<div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2">ID</div>
+                <div class="col-sm-10"><input type="text" ng-model="id" name="id" required>
+                  <span ng-show="myForm.id.$touched && myForm.id.$invalid"  class="bg-warning">Oops! Id field is required.</span></div>
+            </div><br>
+
+            <div class="row">
+               <div class="col-sm-2">FirstName</div>
+               <div class="col-sm-4"><input type="text" ng-model="firstName" name ="firstName" required>
+                <span ng-show="myForm.firstName.$touched && myForm.firstName.$invalid" style="color:red">Oops! FirstName field is required.</span></div>
+               <div class="col-sm-2">lastName</div>
+               <div class="col-sm-4"><input type="text" ng-model="lastName" name="lastName" required> 
+                <span ng-show="myForm.lastName.$touched && myForm.lastName.$invalid" style="color:red">Oops! LastName field is required.</span></div>
+          </div><br>
+
+          <div class="row">
+            <div class="col-sm-2">Date of Birth</div>
+              <div class="col-sm-4">
+                <p class="input-group">
+                  <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" style=" width : 200px;"/>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p> 
+             </div>
+          </div><br>
+
+          <div class="row">
+              <div class="col-sm-2">Class</div>
+              <div class="col-sm-10"><select ng-model="class" ng-options="item for item in classes" name="class" required></select>
+                <span ng-show="myForm.class.$touched && myForm.class.$invalid" style="color:red">Oops! Class field is required.</span></div>
+          </div><br>
+         
+          <div class="row">
+              <div class="col-sm-2"><button type="submit" class="btn btn-default" ng-click="submit()" ng-disabled="myForm.$invalid || myForm.$pristine">Submit</button></div>
+          </div><br>
+          
+        </div>-->

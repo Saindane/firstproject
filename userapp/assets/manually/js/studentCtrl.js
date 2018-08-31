@@ -34,7 +34,7 @@ app.controller("studentCtrl",['$scope','$uibModalInstance','userService', '$root
       $scope.student.class = $scope.class;
     
     //This is calling method from services  
-      userService.setStudent($scope.students);
+      userService.setStudent($scope.student);
 
 
 

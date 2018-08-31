@@ -22,6 +22,7 @@ app.service("userService",["$http", '$rootScope',function($http,$rootScope){
         //In that broadcase is use
         $rootScope.$broadcast('eventName');
     }
+    
   //This is for sending student array
     this.getStudents = function(){
         return students;
