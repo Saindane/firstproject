@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 CommentForm
+
+
+        form(method='POST' action='/user')
+          div.form-group
+            label(for='userid') userId:
+            input#name.form-control(type='text', name='userid')
+          div.form-group
+            label(for='title') Title:
+            input#email.form-control(type='text', name='title')
+          div.form-group
+            label(for='comment') Comments:
+            input#favoriteBook.form-control(type='text', name='comment')
+          div.form-group
+            input(type="submit")
+
+          
