@@ -5,59 +5,50 @@ var fs = require('fs');
 var app = express();
 
 
-var data;
+
 
 // This responds with "Hello World" on the homepage
 app.get('/', function (req, res) {
    res.send('Home Page');
 })
 
-//It will display all users from api 
+
+//It will display all users from input.json file 
 app.get('/users', function(req, res, next) {
-    //This is fetching the from url
-    Request.get("https://jsonplaceholder.typicode.com/posts", (error, response, data) => {
-  
-  
-      if(error) {
-          return console.log(error);
-      }
-  
-       //url fetch data store into file
-      fs.writeFile('json.txt', data ,  function(err) { if (err) {
+    //This is fetching the from file input.json
+    var data = JSON.stringify(objects)
+       // fetch data store into file
+      fs.writeFile('output.json', data ,  function(err) { if (err) {
              return console.error(err);
           }
-      })
+        }) 
       res.send('Data Fetching Successfully');
-  });
-
-
-
-
-
-/* Post Data to Api. */
-app.post('/users', function (req, res) {
- 
-    Request.post({
-      "headers": { "content-type": "application/json" },
-      "url": "https://jsonplaceholder.typicode.com/posts",
-      "body": JSON.stringify({
-          "userid": "22",
-          "title": "abc",
-          "comment": "THis is user Comment"
-      })
-  }, (error, response, body) => {
-      if(error) {
-          return console.dir(error);
-      }
-      console.dir(JSON.parse(body));
-  });
-  res.send('Data Posted Successfully');
-  })
 });
 
 
 
-//It will update the contain from json file
+
+/* Post Data to output.json. */
+app.post('/users', function (req, res) {
+  var newObject = {
+                  "id":5,
+                  "name":"Ram",
+                  "age":"24"
+                }
+objects.push(newObject);
+
+  var data = JSON.stringify(objects)
+
+  fs.writeFile('input.json', data ,  function(err) { if (err) {
+    return console.error(err);
+ }
+}) 
+res.send('Data Posted Successfully');
+});
+
+
+
+//It will fetch data from input.json and add updated data into output.json
 app.put('/user/:id',function(req,res,next){
       //res.send({type:'PUT'})
       var id = parseInt(req.params.id);
@@ -68,13 +59,12 @@ app.put('/user/:id',function(req,res,next){
          obj.age=24;
        }
   });
-
   var data = JSON.stringify(objects)
-  fs.writeFile('input.json', data ,  function(err) { if (err) {
+  fs.writeFile('output.json', data ,  function(err) { if (err) {
     return console.error(err);
  }
 })
-  res.send('Update Data Successfully');
+  res.send('Data Updated Successfully');
 
   })
   
@@ -94,11 +84,11 @@ app.delete('/delete/:id', function (req, res) {
 });
 
 var data = JSON.stringify(objects)
-fs.writeFile('remain.json', data ,  function(err) { if (err) {
+fs.writeFile('output.json', data ,  function(err) { if (err) {
     return console.error(err);
  }
 })
-   res.send('Update Deleted Successfully');
+   res.send('Data Deleted Successfully');
 })
 
 
