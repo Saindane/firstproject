@@ -55,7 +55,7 @@ objects.push(newUser);
  }
 }) 
    //res.send('Data Posted Successfully');
-   res.send(objects);
+   res.send(data);
 });
 
 
