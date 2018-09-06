@@ -15,15 +15,17 @@ app.get('/', function (req, res) {
 
 //It will display all users from input.json file 
 app.get('/users', function(req, res, next) {
-  
-  fs.readFile('input.json', function (err, data) {
-    if (err) {
-       return console.error(err);
-    }
-    res.send(data.toString());
- });
-      
+    //This is fetching the from file input.json
+    
+    fs.readFile('input.json', function (err, data) {
+      if (err) {
+         return console.error(err);
+      }
+      res.send(data.toString());
+    });
 });
+      //res.send('Data Fetching Successfully');
+      
 
 
 
@@ -53,7 +55,7 @@ objects.push(newUser);
  }
 }) 
    //res.send('Data Posted Successfully');
-   res.send(newUser);
+   res.send(objects);
 });
 
 
@@ -108,7 +110,7 @@ fs.writeFile('input.json', data ,  function(err) { if (err) {
 
 
 
-var server = app.listen(8081, function () {
+var server = app.listen(8082, function () {
 
     var host = server.address().address
     var port = server.address().port
