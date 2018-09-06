@@ -29,7 +29,7 @@ app.get('/users', function(req, res, next) {
 
 
 
-/* Post Data to output.json. */
+/* Post Data to input.json. */
 app.post('/users', function (req, res) {
   /*
   var newObject = {
@@ -59,7 +59,7 @@ objects.push(newUser);
 
 
 
-//It will fetch data from input.json and add updated data into output.json
+//It will fetch data from input.json and add updated data into input.json
 app.put('/user/:id',function(req,res,next){
       
   
@@ -72,7 +72,7 @@ app.put('/user/:id',function(req,res,next){
        }
   });
   var data = JSON.stringify(objects)
-  fs.writeFile('output.json', data ,  function(err) { if (err) {
+  fs.writeFile('input.json', data ,  function(err) { if (err) {
     return console.error(err);
  }
 })
@@ -83,7 +83,7 @@ app.put('/user/:id',function(req,res,next){
   
   
 
-// This will delete data from input.json and store the data in remain.json
+// This will delete data from input.json 
 app.delete('/delete/:id', function (req, res) {
 
     var id = parseInt(req.params.id);
@@ -91,13 +91,14 @@ app.delete('/delete/:id', function (req, res) {
 
     objects.forEach(function (obj) {
     if(obj.id === id){
-       var index = objects.indexOf(objects[obj.id]);
-       objects.splice(index-1, 1);
+       var index = objects.indexOf(obj);
+       console.log(index);
+       objects.splice(index, 1);
     }
 });
 
 var data = JSON.stringify(objects)
-fs.writeFile('output.json', data ,  function(err) { if (err) {
+fs.writeFile('input.json', data ,  function(err) { if (err) {
     return console.error(err);
  }
 })
