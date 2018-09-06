@@ -1,11 +1,11 @@
 var express = require('express');
 var Request = require('request');
-var objects = require('./input.json');
 var fs = require('fs');
 var app = express();
 
 app.use(express.json());
 
+var objects;
 
 // This responds with "Hello World" on the homepage
 app.get('/', function (req, res) {
@@ -15,30 +15,41 @@ app.get('/', function (req, res) {
 
 //It will display all users from input.json file 
 app.get('/users', function(req, res, next) {
-    //This is fetching the from file input.json
+
+  if(fs.existsSync('input.json')){
+    display();
+  }  
+  else
+  {
+    res.send("File not Present");
+  }
+
+  function display(){
     
     fs.readFile('input.json', function (err, data) {
       if (err) {
          return console.error(err);
       }
       res.send(data.toString());
-    });
+    });  
+  }
 });
-      //res.send('Data Fetching Successfully');
-      
-
-
-
+     
 
 /* Post Data to input.json. */
 app.post('/users', function (req, res) {
-  /*
-  var newObject = {
-                  "id":5,
-                  "name":"Ram",
-                  "age":"24"
-                }
-objects.push(newObject);*/
+
+  if(fs.existsSync('input.json')){
+    display();
+  }  
+  else
+  {
+    res.send("File not Present");
+  }
+
+function display(){
+
+objects = JSON.parse(fs.readFileSync('input.json'));
 
 const newUser = {
   id : objects.length+1,
@@ -54,16 +65,27 @@ objects.push(newUser);
     return console.error(err);
  }
 }) 
-   //res.send('Data Posted Successfully');
-   res.send(data);
+   res.send(objects);
+}
+
 });
 
 
 
 //It will fetch data from input.json and add updated data into input.json
 app.put('/user/:id',function(req,res,next){
-      
-  
+
+      if(fs.existsSync('input.json')){
+        display();
+      }  
+      else
+      {
+        res.send("File not Present");
+      }
+
+function display(){
+
+      objects = JSON.parse(fs.readFileSync('input.json'));
       var id = parseInt(req.params.id);
 
        objects.forEach(function (obj) {
@@ -72,13 +94,14 @@ app.put('/user/:id',function(req,res,next){
          obj.age=req.body.age;
        }
   });
-  var data = JSON.stringify(objects)
-  fs.writeFile('input.json', data ,  function(err) { if (err) {
-    return console.error(err);
- }
-})
-  //res.send('Data Updated Successfully');
+
+       var data = JSON.stringify(objects)
+       fs.writeFile('input.json', data ,  function(err) { if (err) {
+       return console.error(err);
+      }
+   })
   res.send(data);
+      }
 
   })
   
@@ -86,6 +109,19 @@ app.put('/user/:id',function(req,res,next){
 
 // This will delete data from input.json 
 app.delete('/delete/:id', function (req, res) {
+
+  if(fs.existsSync('input.json')){
+    display();
+  }  
+  else
+  {
+    res.send("File not Present");
+  }
+
+
+  function display(){
+
+  objects = JSON.parse(fs.readFileSync('input.json'));
 
     var id = parseInt(req.params.id);
     console.log(id);
@@ -103,14 +139,15 @@ fs.writeFile('input.json', data ,  function(err) { if (err) {
     return console.error(err);
  }
 })
-   //res.send('Data Deleted Successfully');
    res.send(data);
+   }
+
 })
 
 
 
 
-var server = app.listen(8082, function () {
+var server = app.listen(8085, function () {
 
     var host = server.address().address
     var port = server.address().port
