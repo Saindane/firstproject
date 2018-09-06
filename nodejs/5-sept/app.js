@@ -15,15 +15,14 @@ app.get('/', function (req, res) {
 
 //It will display all users from input.json file 
 app.get('/users', function(req, res, next) {
-    //This is fetching the from file input.json
-    var data = JSON.stringify(objects)
-       // fetch data store into file
-      fs.writeFile('output.json', data ,  function(err) { if (err) {
-             return console.error(err);
-          }
-        }) 
-      //res.send('Data Fetching Successfully');
-      res.send(objects);
+  
+  fs.readFile('input.json', function (err, data) {
+    if (err) {
+       return console.error(err);
+    }
+    res.send(data.toString());
+ });
+      
 });
 
 
