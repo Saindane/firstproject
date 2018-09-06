@@ -4,7 +4,7 @@ var objects = require('./input.json');
 var fs = require('fs');
 var app = express();
 
-
+app.use(express.json());
 
 
 // This responds with "Hello World" on the homepage
@@ -22,7 +22,8 @@ app.get('/users', function(req, res, next) {
              return console.error(err);
           }
         }) 
-      res.send('Data Fetching Successfully');
+      //res.send('Data Fetching Successfully');
+      res.send(objects);
 });
 
 
@@ -30,12 +31,21 @@ app.get('/users', function(req, res, next) {
 
 /* Post Data to output.json. */
 app.post('/users', function (req, res) {
+  /*
   var newObject = {
                   "id":5,
                   "name":"Ram",
                   "age":"24"
                 }
-objects.push(newObject);
+objects.push(newObject);*/
+
+const newUser = {
+  id : objects.length+1,
+  name : req.body.name,
+  age:req.body.age
+}
+
+objects.push(newUser);
 
   var data = JSON.stringify(objects)
 
@@ -43,20 +53,22 @@ objects.push(newObject);
     return console.error(err);
  }
 }) 
-res.send('Data Posted Successfully');
+   //res.send('Data Posted Successfully');
+   res.send(newUser);
 });
 
 
 
 //It will fetch data from input.json and add updated data into output.json
 app.put('/user/:id',function(req,res,next){
-      //res.send({type:'PUT'})
+      
+  
       var id = parseInt(req.params.id);
 
        objects.forEach(function (obj) {
        if(obj.id === id){
-         obj.name="xyz";
-         obj.age=24;
+         obj.name= req.body.name;
+         obj.age=req.body.age;
        }
   });
   var data = JSON.stringify(objects)
@@ -64,7 +76,8 @@ app.put('/user/:id',function(req,res,next){
     return console.error(err);
  }
 })
-  res.send('Data Updated Successfully');
+  //res.send('Data Updated Successfully');
+  res.send(data);
 
   })
   
@@ -88,7 +101,8 @@ fs.writeFile('output.json', data ,  function(err) { if (err) {
     return console.error(err);
  }
 })
-   res.send('Data Deleted Successfully');
+   //res.send('Data Deleted Successfully');
+   res.send(data);
 })
 
 
