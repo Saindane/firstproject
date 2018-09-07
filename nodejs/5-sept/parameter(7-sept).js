@@ -6,10 +6,24 @@ var objects = [{"id":1,"name":"Alex","age":22},
                {"id":3,"name":"Kitter","age":27},
                {"id":4,"name":"Ali","age":29}]
 
-// This responds with "Hello World" on the homepage
-app.get('/', function (req, res) {
+               
+//This responds to optional params and send data which is matches that id
+app.get('/:id?', function (req, res) {
+  
+    console.log(typeof req.params.id)
+  if(typeof req.params.id === "undefined")
+  {
       res.send("Home Page");
- });
+  }
+ var id = parseInt(req.params.id);
+ objects.forEach(function (obj) {
+ if(obj.id === id){
+     res.send(obj);
+ }
+});
+
+
+});
 
 
 
@@ -64,19 +78,6 @@ app.get('/user', function (req, res) {
 });
 
 
-
-//This responds to optional params and send data which is matches that id
-app.get('/:id?', function (req, res) {
-
-    var id = parseInt(req.params.id);
-
-    objects.forEach(function (obj) {
-    if(obj.id === id){
-        res.send(obj);
-    }
-});
-
-});
 
 
  var server = app.listen(8086, function () {
