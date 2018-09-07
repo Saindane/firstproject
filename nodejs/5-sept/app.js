@@ -16,16 +16,16 @@ app.get('/', function (req, res) {
 //It will display all users from input.json file 
 app.get('/users', function(req, res, next) {
 
-  if(fs.existsSync('input.json')){
-    display();
-  }  
-  else
-  {
-    res.send("File not Present");
-  }
+fs.stat('input.json', function(err, stat) {
+  if(err == null) {
+      display();
+  } else if(err.code == 'ENOENT') {
+    res.send("Filenot Found Error");
+  } 
+});
 
   function display(){
-    
+
     fs.readFile('input.json', function (err, data) {
       if (err) {
          return console.error(err);
@@ -39,13 +39,14 @@ app.get('/users', function(req, res, next) {
 /* Post Data to input.json. */
 app.post('/users', function (req, res) {
 
-  if(fs.existsSync('input.json')){
-    display();
-  }  
-  else
-  {
-    res.send("File not Present");
-  }
+       
+fs.stat('input.json', function(err, stat) {
+  if(err == null) {
+      display();
+  } else if(err.code == 'ENOENT') {
+    res.send("Filenot Found Error");
+  } 
+});
 
 function display(){
 
@@ -75,14 +76,16 @@ objects.push(newUser);
 //It will fetch data from input.json and add updated data into input.json
 app.put('/user/:id',function(req,res,next){
 
-      if(fs.existsSync('input.json')){
-        display();
-      }  
-      else
-      {
-        res.send("File not Present");
-      }
+          
+fs.stat('input.json', function(err, stat) {
+  if(err == null) {
+      display();
+  } else if(err.code == 'ENOENT') {
+    res.send("Filenot Found Error");
+  } 
+});
 
+  
 function display(){
 
       objects = JSON.parse(fs.readFileSync('input.json'));
@@ -109,14 +112,14 @@ function display(){
 
 // This will delete data from input.json 
 app.delete('/delete/:id', function (req, res) {
-
-  if(fs.existsSync('input.json')){
-    display();
-  }  
-  else
-  {
-    res.send("File not Present");
-  }
+       
+fs.stat('input.json', function(err, stat) {
+  if(err == null) {
+      display();
+  } else if(err.code == 'ENOENT') {
+    res.send("Filenot Found Error");
+  } 
+});
 
 
   function display(){
