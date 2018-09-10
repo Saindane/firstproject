@@ -22,6 +22,7 @@ app.get('/abc/:id?', function (req, res) {
 
 });
 
+
 //url = http://localhost:8087/users/1
 //This responds to route params and send data which is matches that id
  app.get('/users/:id', function (req, res) {
@@ -72,7 +73,6 @@ app.get('/user', function (req, res) {
  }   
 
 });
-
 
 
  var server = app.listen(8087, function () {
