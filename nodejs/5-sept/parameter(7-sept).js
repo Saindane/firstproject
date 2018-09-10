@@ -6,29 +6,26 @@ var objects = [{"id":1,"name":"Alex","age":22},
                {"id":3,"name":"Kitter","age":27},
                {"id":4,"name":"Ali","age":29}]
 
-               
+//url = http://localhost:8087/abc/ or http://localhost:8087/abc/1
 //This responds to optional params and send data which is matches that id
-app.get('/:id?', function (req, res) {
-  
-    console.log(typeof req.params.id)
-  if(typeof req.params.id === "undefined")
-  {
-      res.send("Home Page");
-  }
- var id = parseInt(req.params.id);
- objects.forEach(function (obj) {
- if(obj.id === id){
-     res.send(obj);
- }
+app.get('/abc/:id?', function (req, res) {
+    if(typeof req.params.id === "undefined")
+    {
+        res.send("Home Page");
+    }
+   var id = parseInt(req.params.id);
+   objects.forEach(function (obj) {
+   if(obj.id === id){
+       res.send(obj);
+   }
 });
-
 
 });
 
-
-
+//url = http://localhost:8087/users/1
 //This responds to route params and send data which is matches that id
  app.get('/users/:id', function (req, res) {
+
 
         var id = parseInt(req.params.id);
         var flag = false;
@@ -52,7 +49,7 @@ app.get('/:id?', function (req, res) {
 });
 
 
-
+//url =  http://localhost:8087/user?name=Alex
 //This responds to queryString and send data which is matches that name
 app.get('/user', function (req, res) {
 
@@ -68,7 +65,6 @@ app.get('/user', function (req, res) {
     }
 });
 
-
   if(flag === true) {
      res.send(user);
  }else{
@@ -79,8 +75,7 @@ app.get('/user', function (req, res) {
 
 
 
-
- var server = app.listen(8086, function () {
+ var server = app.listen(8087, function () {
 
     var host = server.address().address
     var port = server.address().port
