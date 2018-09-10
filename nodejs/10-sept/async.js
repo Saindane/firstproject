@@ -23,6 +23,8 @@ app.get('/allusers', function (req, res,/* next*/) {
     }) 
 });
 
+
+//url = http://localhost:8088/users/?email=xyz@gmail.com or http://localhost:8088/users/1
 app.get('/users/:id?', function (req, res,next) {
     var reqparam = parseInt(req.params.id);
     var reqquery = req.query.email ;
@@ -46,19 +48,25 @@ app.get('/users/:id?', function (req, res,next) {
              });
 
         if(flag === false) {
-            return callback(new Error('User not found'));
+             callback('User not found');
            }
         else{
-            res.send(user);
+            callback();
         }
-}
-    ],function(error){
+},
+     function(callback){
+         callback(null,user);
+       }
+    ],function(error,Data){
        if(error){
-        res.send("User not Found");
+        res.send(error);
+      }else{
+        res.send(Data);
       }
     }) 
 });
 
+//url = http://localhost:8088/users/7
 app.post('/users/:id?', function (req, res,next) {
     var reqparam = parseInt(req.params.id);
     var reqquery = req.query.email ;
@@ -82,57 +90,26 @@ app.post('/users/:id?', function (req, res,next) {
          });
 
         if(flag === true) {
-            return callback(new Error('User is already added'));
+             callback('User is already added');
            }
         else{
-            users.push(newUser);
-            res.send(users);
+           callback();
         }
-}
-    ],function(error){
+},
+    function(callback){
+     users.push(newUser);
+     callback(null,users)
+  }
+
+    ],function(error,done){
        if(error){
-        res.send("User is already Present");
+        res.send(error);
       }
+      else{       
+        res.send(done);
+    }
     }) 
 });
-
-app.post('/users/:id?', function (req, res,next) {
-    var reqparam = parseInt(req.params.id);
-    var reqquery = req.query.email ;
-    var flag = false;
-    const newUser = {
-        id : reqparam,
-        name : req.body.name,
-        age:req.body.age,
-        email:req.body.email
-      }
-
-    async.series([
-
-     function(callback){
-         
-        users.forEach(function (obj) {
-            console.log(typeof obj.id);
-            if(obj.id === reqparam){
-               flag = true;
-            }
-         });
-
-        if(flag === true) {
-            return callback(new Error('User is already added'));
-           }
-        else{
-            users.push(newUser);
-            res.send(users);
-        }
-}
-    ],function(error){
-       if(error){
-        res.send("User is already Present");
-      }
-    }) 
-});
-
 
 
 var server = app.listen(8088, function () {
