@@ -52,15 +52,11 @@ app.get('/users/:id?', function(req, res, next) {
                 callback();
             }
         },
-        //This function display data
-        function(callback) {
-            callback(user);
-        }
     ], function(error, data) {
         if (error) {
             res.send(error);
         } else {
-            res.send(data);
+            res.send(user);
         }
     })
 });
@@ -87,24 +83,18 @@ app.post('/users/:id?', function(req, res, next) {
                     flag = true;
                 }
             });
-
             if (flag === true) {
                 callback('Data already exist');
             } else {
+                users.push(newUser);
                 callback();
             }
         },
-        //This function posting the data into array
-        function(callback) {
-            users.push(newUser);
-            callback(users)
-        }
-
     ], function(error, data) {
         if (error) {
             res.send(error);
         } else {
-            res.send(data);
+            res.send(users);
         }
     })
 });
@@ -123,23 +113,20 @@ app.put('/user/:id', function(req, res, next) {
                     flag = true;
                 }
             });
-
             if (flag === false) {
                 callback(" No data found to upadate");
             } else {
                 callback();
             }
-
         },
         //This function updating data 
         function(callback) {
             users.forEach(function(obj) {
-
                 if (obj.id === id) {
                     obj.email = req.body.email;
                     obj.name = req.body.name;
                     obj.age = req.body.age;
-                    callback(users)
+                    callback(null, users)
                 }
             });
         }
@@ -147,7 +134,7 @@ app.put('/user/:id', function(req, res, next) {
         if (error) {
             res.send(error);
         } else {
-            res.send(data);
+            res.send(data[1]);
         }
     })
 });
@@ -166,13 +153,11 @@ app.delete('/user/:id', function(req, res, next) {
                     flag = true;
                 }
             });
-
             if (flag === false) {
                 callback("No data found");
             } else {
                 callback();
             }
-
         },
         //This function deleteing data
         function(callback) {
@@ -181,7 +166,7 @@ app.delete('/user/:id', function(req, res, next) {
                 if (obj.id === id) {
                     var index = users.indexOf(obj);
                     users.splice(index, 1);
-                    callback(users)
+                    callback(null, users)
                 }
             });
         }
@@ -189,7 +174,7 @@ app.delete('/user/:id', function(req, res, next) {
         if (error) {
             res.send(error);
         } else {
-            res.send(data);
+            res.send(data[1]);
         }
     })
 });
