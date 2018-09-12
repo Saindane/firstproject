@@ -13,7 +13,7 @@ db.once('open', function() { console.log("Connected to MongoDb"); })
 db.on('error', function(err) { console.log(err); })
 
 //This is for getting all users
-//url =  http://localhost:8089/allusers
+//url =  http://localhost:8090/allusers
 app.get('/allusers', function(req, res) {
     User.find({}, function(err, users) {
         res.send(users);
@@ -21,7 +21,7 @@ app.get('/allusers', function(req, res) {
 })
 
 //This is giving single user
-//url =  http://localhost:8089/allusers/alex@gmail.com
+//url =  http://localhost:8090/allusers/1
 app.get('/allusers/:id', function(req, res) {
     let id = parseInt(req.params.id);
     flag = false;
@@ -64,8 +64,8 @@ app.get('/allusers/:id', function(req, res) {
 })
 
 
-//This is giving single user
-//url =  http://localhost:8089/allusers/alex@gmail.com
+//This is for posting the single data
+//url =  http://localhost:8090/adduser/1
 app.post('/adduser/:id', function(req, res) {
     let id = parseInt(req.params.id);
     flag = false;
@@ -116,7 +116,8 @@ app.post('/adduser/:id', function(req, res) {
 
 })
 
-
+//updating operation is here
+//url =  http://localhost:8090/user/1
 app.put('/user/:id', function(req, res) {
     flag = false;
     let user = {};
@@ -164,6 +165,8 @@ app.put('/user/:id', function(req, res) {
     })
 })
 
+//Delete operation is here
+//url =  http://localhost:8090/user/1
 app.delete('/user/:id', function(req, res) {
     let id = parseInt(req.params.id);
 
