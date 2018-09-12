@@ -65,8 +65,8 @@ app.get('/allusers/:id', function(req, res) {
 
 
 //This is for posting the single data
-//url =  http://localhost:8090/adduser/1
-app.post('/adduser/:id', function(req, res) {
+//url =  http://localhost:8090/adduser/root@gmail.com
+app.post('/adduser/:email', function(req, res) {
     let id = parseInt(req.params.id);
     flag = false;
 
