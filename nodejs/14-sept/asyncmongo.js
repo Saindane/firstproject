@@ -20,7 +20,6 @@ var id;
 //url =  http://localhost:8090/user/1
 app.get('/user/:id', function(req, res) {
     let id = parseInt(req.params.id);
-    let email = req.query.email;
     flag = false;
 
     async.series([
