@@ -18,6 +18,7 @@ var id;
 
 //This is giving single user
 //url =  http://localhost:8090/user/1
+/*
 app.get('/user/:id', function(req, res) {
     let id = parseInt(req.params.id);
     flag = false;
@@ -67,7 +68,58 @@ app.get('/user/:id', function(req, res) {
         }
     })
 
+})*/
+
+
+
+
+//This is giving single user
+//url =  http://localhost:8090/user/1 or   http://localhost:8090/user/xyz@gmail.com
+app.get('/user/:id', function(req, res) {
+    let id = req.params.id;
+    flag = false;
+
+    async.series([
+        //This function checking id is present or not
+        function(callback) {
+            Serial.find({
+                $or: [
+                    { 'id': id },
+                    { 'email': id }
+                ]
+            }, function(err, docs) {
+                if (docs.length === 0) {
+                    flag = true;
+                }
+                if (flag === true) {
+                    callback('No Data Found');
+                } else {
+                    id = docs[0]._id
+                    callback();
+                }
+            })
+        },
+        //This function giving singleUser
+        function(callback) {
+            Info.find({ 'id': id }, function(err, data) {
+                if (err) {
+                    console.log(err);
+                    return;
+                } else {
+                    callback(null, data)
+                }
+            });
+        }
+    ], function(error, data) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.send(data[1]);
+        }
+    })
+
 })
+
 
 
 
@@ -82,10 +134,11 @@ app.post('/adduser/:id', function(req, res) {
 
     let serial = new Serial();
     serial.id = id;
+    serial.email = email;
 
     let user = new Info();
     user.name = req.body.name;
-    user.email = email;
+    user.email = email
     user.id = serial._id
 
     async.series([
