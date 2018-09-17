@@ -64,15 +64,12 @@ app.get('/user/:id', function(req, res) {
             res.send(data[2]);
         }
     })
-
 })
 
-
 //This is for posting the single data
-//url = http://localhost:8090/adduser/3?email=axy@gmail.com
+//url = http://localhost:8090/adduser/3
 app.post('/adduser/:id', function(req, res) {
-    let id = parseInt(req.params.id);
-    let email = req.query.email;
+    let id = req.params.id;
     flag = false;
 
     let serial = new Serial();
@@ -81,14 +78,14 @@ app.post('/adduser/:id', function(req, res) {
 
     let user = new Info();
     user.name = req.body.name;
-    user.email = email
+    user.email = req.body.name;
     user.id = serial._id
 
     async.series([
             //This function checking id is present or not
             function(callback) {
                 Serial.find({ "id": id }, function(err, docs) {
-                    if (docs.length) {
+                    if (docs.length > 0) {
                         flag = true;
                     }
                     if (flag === true) {
@@ -128,8 +125,8 @@ app.post('/adduser/:id', function(req, res) {
                 res.send(data[2]);
             }
         })
-})
 
+})
 
 
 
