@@ -105,17 +105,6 @@ app.post('/adduser/:id', function(req, res) {
                         callback();
                     }
                 })
-            },
-            //This function is storing serialnumber in serialSchema 
-            function(callback) {
-                serial.save(function(err) {
-                    if (err) {
-                        console.log(err);
-                        return;
-                    } else {
-                        callback(null, "Data save");
-                    }
-                })
             }
         ],
         function(error, data) {
