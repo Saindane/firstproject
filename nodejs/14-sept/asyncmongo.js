@@ -102,7 +102,7 @@ app.post('/adduser/:id', function(req, res) {
                         console.log(err);
                         return;
                     } else {
-                        callback();
+                        callback(null, "Data save");
                     }
                 })
             }
@@ -111,10 +111,9 @@ app.post('/adduser/:id', function(req, res) {
             if (error) {
                 res.send(error);
             } else {
-                res.send(data[2]);
+                res.send(data[1]);
             }
         })
-
 })
 
 
