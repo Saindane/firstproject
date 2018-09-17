@@ -17,8 +17,6 @@ db.on('error', function(err) { console.log(err); })
 //url =  http://localhost:8090/allusers/1 or http://localhost:8090/allusers/aoot@gmail.com
 app.get('/allusers/:id', function(req, res) {
     let id = req.params.id;
-    console.log(id);
-    console.log(typeof id);
 
     async.series([
         //This function checking id/email is present or not
