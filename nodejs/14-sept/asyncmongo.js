@@ -14,64 +14,6 @@ db.once('open', function() { console.log("Connected to MongoDb"); })
 
 db.on('error', function(err) { console.log(err); })
 
-var id;
-
-//This is giving single user
-//url =  http://localhost:8090/user/1
-/*
-app.get('/user/:id', function(req, res) {
-    let id = parseInt(req.params.id);
-    flag = false;
-
-    async.series([
-        //This function checking id is present or not
-        function(callback) {
-            Serial.find({ 'id': id }, function(err, docs) {
-                if (docs.length) {
-                    flag = true;
-                }
-                if (flag === false) {
-                    callback('No Data Found');
-                } else {
-                    callback();
-                }
-            })
-        },
-        //This function giving _id of single serialNumber
-        function(callback) {
-            Serial.find({ 'id': id }, function(err, data) {
-                if (err) {
-                    console.log(err);
-                    return;
-                } else {
-                    id = data[0]._id
-                    callback();
-                }
-            });
-        },
-        //This function giving singleUser
-        function(callback) {
-            Info.find({ 'id': id }, function(err, data) {
-                if (err) {
-                    console.log(err);
-                    return;
-                } else {
-                    callback(null, data)
-                }
-            });
-        }
-    ], function(error, data) {
-        if (error) {
-            res.send(error);
-        } else {
-            res.send(data[2]);
-        }
-    })
-
-})*/
-
-
-
 
 //This is giving single user
 //url =  http://localhost:8090/user/1 or   http://localhost:8090/user/xyz@gmail.com
@@ -80,18 +22,23 @@ app.get('/user/:id', function(req, res) {
     flag = false;
 
     async.series([
-        //This function checking id is present or not
+        //This function checking email is present or not
         function(callback) {
-            Serial.find({
-                $or: [
-                    { 'id': id },
-                    { 'email': id }
-                ]
-            }, function(err, docs) {
+            Info.find({ 'email': id }, function(err, docs) {
                 if (docs.length === 0) {
                     flag = true;
                 }
                 if (flag === true) {
+                    callback();
+                } else {
+                    res.send(docs);
+                }
+            })
+        },
+        //This function checking id is present or not
+        function(callback) {
+            Serial.find({ 'id': id }, function(err, docs) {
+                if (docs.length === 0) {
                     callback('No Data Found');
                 } else {
                     id = docs[0]._id
@@ -114,15 +61,11 @@ app.get('/user/:id', function(req, res) {
         if (error) {
             res.send(error);
         } else {
-            res.send(data[1]);
+            res.send(data[2]);
         }
     })
 
 })
-
-
-
-
 
 
 //This is for posting the single data
@@ -134,7 +77,7 @@ app.post('/adduser/:id', function(req, res) {
 
     let serial = new Serial();
     serial.id = id;
-    serial.email = email;
+
 
     let user = new Info();
     user.name = req.body.name;
@@ -155,20 +98,7 @@ app.post('/adduser/:id', function(req, res) {
                     }
                 })
             },
-            //This function checking email is present or not
-            function(callback) {
-                Info.find({ "email": email }, function(err, docs) {
-                    if (docs.length) {
-                        flag = true;
-                    }
-                    if (flag === true) {
-                        callback('Data is already exist');
-                    } else {
-                        callback()
-                    }
-                })
-            },
-            //This function is storing data into database
+            //This function is storing userinformation in infoSchema 
             function(callback) {
                 user.save(function(err) {
                     if (err) {
@@ -179,13 +109,14 @@ app.post('/adduser/:id', function(req, res) {
                     }
                 })
             },
+            //This function is storing serialnumber in serialSchema 
             function(callback) {
                 serial.save(function(err) {
                     if (err) {
                         console.log(err);
                         return;
                     } else {
-                        res.send("Data save");
+                        callback(null, "Data save");
                     }
                 })
             }
@@ -194,10 +125,9 @@ app.post('/adduser/:id', function(req, res) {
             if (error) {
                 res.send(error);
             } else {
-                res.send(data[1]);
+                res.send(data[2]);
             }
         })
-
 })
 
 
