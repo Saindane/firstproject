@@ -78,7 +78,7 @@ app.post('/adduser/:id', function(req, res) {
 
     let user = new Info();
     user.name = req.body.name;
-    user.email = req.body.name;
+    user.email = req.body.email;
     user.id = serial._id
 
     async.series([
