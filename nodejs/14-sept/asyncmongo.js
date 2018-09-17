@@ -72,14 +72,10 @@ app.post('/adduser/:id', function(req, res) {
     let id = req.params.id;
     flag = false;
 
-    let serial = new Serial();
-    serial.id = id;
-
 
     let user = new Info();
     user.name = req.body.name;
     user.email = req.body.email;
-    user.id = serial._id
 
     async.series([
             //This function checking id is present or not
@@ -88,9 +84,10 @@ app.post('/adduser/:id', function(req, res) {
                     if (docs.length > 0) {
                         flag = true;
                     }
-                    if (flag === true) {
-                        callback('Data is already exist');
+                    if (flag === false) {
+                        callback('SeriesNumber isnot exist');
                     } else {
+                        user.id = docs[0]._id;
                         callback()
                     }
                 })
@@ -102,7 +99,7 @@ app.post('/adduser/:id', function(req, res) {
                         console.log(err);
                         return;
                     } else {
-                        callback(null, "Data save");
+                        callback("Data Save");
                     }
                 })
             }
@@ -111,10 +108,12 @@ app.post('/adduser/:id', function(req, res) {
             if (error) {
                 res.send(error);
             } else {
-                res.send(data[1]);
+                res.send(data);
             }
         })
 })
+
+
 
 
 
