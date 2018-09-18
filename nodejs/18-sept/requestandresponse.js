@@ -84,18 +84,42 @@
 //4]THis for post method
 //Request
 //post = http://localhost:8090/addcompany
+//body = 
+{
+    "companyName": "Nokia",
+    "address": "shivajiNagar",
+    "country": "Dubai",
+    "state": "Maharashtra",
+    "city": "pune",
+    "status": "activated"
+}
 //Response
 //New Company is added
 
 //5]This for first put method
 //Request
 //put = http://localhost:8090/update/MI
+//body = 
+{
+    "address": "shivajiNagar",
+    "country": "Dubai",
+    "state": "Maharashtra",
+    "city": "pune",
+    "status": "activated"
+}
 //Response
 //update company with new data
 
 //6]This for Second put method
 //Request
 //put = http://localhost:8090/update?state=Maharashtra
+//body = 
+{
+    "address": "shivajiNagar",
+    "country": "Dubai",
+    "state": "Maharashtra",
+    "city": "pune"
+}
 //Response
 //update company with new data
 
