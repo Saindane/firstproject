@@ -177,7 +177,7 @@ app.put('/update/:companyName', function(req, res) {
                     console.log(err);
                     return;
                 } else {
-                    callback(null, 'DataUpdated Successfully')
+                    callback(null, 'update company with new data')
                 }
             })
         }
