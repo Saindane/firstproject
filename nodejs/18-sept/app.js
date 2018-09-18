@@ -40,15 +40,9 @@ app.get('/allcompanies/:companyName', function(req, res) {
 
     async.series([
         function(callback) {
-            Company.find({ "companyName": companyName }, function(err, docs) {
+            Company.find({ $and: [{ "companyName": companyName }, { "status": "activated" }] }, function(err, docs) {
                 if (docs.length !== 0) {
-                    status = docs[0].status;
-                    if (status === 'activated') {
-                        callback(null, docs);
-                    } else {
-                        callback("No active company found")
-                    }
-
+                    callback(null, docs);
                 } else {
                     callback("Company Not found");
                 }
@@ -73,15 +67,9 @@ app.get('/companies/:companyName', function(req, res) {
 
     async.series([
         function(callback) {
-            Company.find({ $and: [{ "companyName": companyName }, { "state": state }] }, function(err, docs) {
+            Company.find({ $and: [{ "companyName": companyName }, { "state": state }, { "status": "activated" }] }, function(err, docs) {
                 if (docs.length !== 0) {
-                    status = docs[0].status;
-                    if (status === 'activated') {
-                        callback(null, docs);
-                    } else {
-                        callback("No active company found")
-                    }
-
+                    callback(null, docs);
                 } else {
                     callback("Company Not found");
                 }
@@ -115,13 +103,11 @@ app.post('/addcompany', function(req, res) {
 
     async.series([
         function(callback) {
-            Company.find({ "companyName": companyName }, function(err, docs) {
+            Company.find({ $and: [{ "companyName": companyName }, { "status": status }] }, function(err, docs) {
                 if (docs.length !== 0) {
                     callback('company already exist');
-                } else if (status === "activated") {
-                    callback()
                 } else {
-                    callback('Company status isnot activated')
+                    callback()
                 }
             })
         },
@@ -195,7 +181,7 @@ app.put('/update/:companyName', function(req, res) {
 app.put('/update', function(req, res) {
 
     var state = req.query.state;
-    var id;
+    var id = [];
 
     let company = {};
     company.address = req.body.address;
@@ -210,7 +196,6 @@ app.put('/update', function(req, res) {
             Company.find({ $and: [{ "state": state }, { "status": 'deactivated' }] }, function(err, docs) {
                 console.log(docs);
                 if (docs.length !== 0) {
-                    id = docs[0]._id;
                     callback();
                 } else {
                     callback('company does not exist');
@@ -218,7 +203,7 @@ app.put('/update', function(req, res) {
             })
         },
         function(callback) {
-            Company.update({ "_id": id }, company, function(err) {
+            Company.updateMany({ $and: [{ "state": state }, { "status": 'deactivated' }] }, company, function(err) {
                 if (err) {
                     console.log(err);
                     return;
