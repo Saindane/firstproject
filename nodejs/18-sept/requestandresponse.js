@@ -90,8 +90,7 @@
     "address": "shivajiNagar",
     "country": "Dubai",
     "state": "Maharashtra",
-    "city": "pune",
-    "status": "activated"
+    "city": "pune"
 }
 //Response
 //New Company is added
@@ -118,7 +117,7 @@
     "address": "shivajiNagar",
     "country": "Dubai",
     "state": "Maharashtra",
-    "city": "pune"
+    "city": "pune",
 }
 //Response
 //update company with new data

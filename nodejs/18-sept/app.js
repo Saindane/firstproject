@@ -90,7 +90,7 @@ app.get('/companies/:companyName', function(req, res) {
 app.post('/addcompany', function(req, res) {
 
     let companyName = req.body.companyName;
-    let status = req.body.status;
+
 
     let company = new Company();
     company.companyName = req.body.companyName;
@@ -98,12 +98,12 @@ app.post('/addcompany', function(req, res) {
     company.country = req.body.country;
     company.state = req.body.state;
     company.city = req.body.city;
-    company.status = req.body.status;
+    company.status = 'activated';
 
 
     async.series([
         function(callback) {
-            Company.find({ $and: [{ "companyName": companyName }, { "status": status }] }, function(err, docs) {
+            Company.find({ $and: [{ "companyName": companyName }, { "status": "activated" }] }, function(err, docs) {
                 if (docs.length !== 0) {
                     callback('company already exist');
                 } else {
