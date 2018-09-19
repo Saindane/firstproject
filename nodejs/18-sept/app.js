@@ -226,7 +226,7 @@ app.put('/update', function(req, res) {
 app.delete('/company/:companyName', function(req, res) {
 
     let companyName = req.params.companyName;
-    let company = { status: "deleted" }
+    //let company = { status: "deleted" }
 
     async.series([
         function(callback) {
@@ -240,7 +240,7 @@ app.delete('/company/:companyName', function(req, res) {
             })
         },
         function(callback) {
-            Company.update({ "companyName": companyName }, company, function(err) {
+            Company.update({ "companyName": companyName }, { $set: { status: 'deleted' } }, function(err) {
                 if (err) {
                     console.log(err);
                     return;
