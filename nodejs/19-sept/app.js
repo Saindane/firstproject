@@ -133,7 +133,51 @@ app.post('/addcountry', function(req, res) {
 
 
 
-app.put('/update', function(req, res) {
+app.put('/update/:countryCode', function(req, res) {
+
+    let code = req.params.countryCode;
+    let countryName = req.body.countryName;
+    let id;
+
+    async.series([
+            //This function checking id is present or not
+            function(callback) {
+                Country.find({ 'country.countryCode': code }, [{
+                        country: { $elemMatch: { countryCode: code } }
+                    }],
+                    function(err, docs) {
+
+                        if (docs.length > 0) {
+                            flag = true;
+                        }
+                        if (flag === false) {
+                            callback('countryCode isnot exist');
+                        } else {
+                            id = docs[0]._id;
+                            callback()
+                        }
+                    })
+            },
+            function(callback) {
+                Country.update({ '_id': id }, { '$set': { 'country.countryName': countryName } },
+                    function(err) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        } else {
+                            callback(null, 'update company with new data')
+                        }
+                    })
+            },
+        ],
+        function(error, data) {
+            if (error) {
+                res.send(error);
+            } else {
+                res.send(data[1]);
+            }
+        })
+
 
 })
 
@@ -187,67 +231,6 @@ app.post('/brand/', function(req, res) {
             }
         })
 })
-
-
-
-/*
-app.get('/country/:id?', function(req, res) {
-
-    let _id = req.params.id;
-    let array = [];
-
-
-    async.series([
-
-        function(callback) {
-
-            if (req.query.countryCode === 'true') {
-
-                Country.find({}, function(err, docs) {
-                    if (docs.length !== 0) {
-                        for (let docslength = 0; docslength < docs.length; docslength++) {
-                            array.push(docs[docslength].countryCode);
-                        }
-                        res.send(array);
-                    }
-                })
-
-            } else if (req.query.countryName === 'true') {
-
-                Country.find({}, function(err, docs) {
-                    for (let docslength = 0; docslength < docs.length; docslength++) {
-                        array.push(docs[docslength].countryName);
-                    }
-                    res.send(array);
-                })
-            } else {
-                callback();
-            }
-        },
-
-        function(callback) {
-            Country.find({ "_id": _id }, function(err, docs) {
-                if (docs.length !== 0) {
-                    callback(null, docs);
-                } else {
-                    callback("Error");
-                }
-            })
-        }
-
-    ], function(error, data) {
-        if (error) {
-            res.send(error);
-        } else {
-            res.send(data[1]);
-        }
-    })
-})
-*/
-
-
-
-
 
 
 
