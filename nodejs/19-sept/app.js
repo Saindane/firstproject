@@ -142,6 +142,7 @@ app.post('/brand/', function(req, res) {
     flag = false;
 
     let code = req.body.countryCode;
+    console.log(code);
 
     let brand = new Brand();
     brand.brandname = req.body.brandname;
@@ -150,18 +151,21 @@ app.post('/brand/', function(req, res) {
     async.series([
             //This function checking id is present or not
             function(callback) {
-                Country.find({}, function(err, docs) {
-                    console.log(docs);
-                    if (docs.length > 0) {
-                        flag = true;
-                    }
-                    if (flag === false) {
-                        callback('countryCode isnot exist');
-                    } else {
-                        brand.countryCode = docs[0]._id;
-                        callback()
-                    }
-                })
+                Country.find({ 'country.countryCode': code }, [{
+                        country: { $elemMatch: { countryCode: code } }
+                    }],
+                    function(err, docs) {
+                        console.log(docs);
+                        if (docs.length > 0) {
+                            flag = true;
+                        }
+                        if (flag === false) {
+                            callback('countryCode isnot exist');
+                        } else {
+                            brand.countryCode = docs[0]._id;
+                            callback()
+                        }
+                    })
             },
             //This function is storing userinformation in infoSchema 
             function(callback) {
