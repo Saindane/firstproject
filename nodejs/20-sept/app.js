@@ -58,7 +58,7 @@ app.post('/adduser', function(req, res) {
 
     async.series([
         function(callback) {
-            User.find({ "email": email } /*{ $and: [{ 'email': email }, { status: { "$not": 'deleted' } }] }*/ , function(err, docs) {
+            User.find({ "email": email }, function(err, docs) {
                 if (docs.length !== 0) {
                     callback('User is  already exist');
                 } else {
@@ -85,7 +85,7 @@ app.post('/adduser', function(req, res) {
     })
 })
 
-//over
+
 app.put('/user/:id', function(req, res) {
 
     let id = req.params.id;
@@ -130,7 +130,7 @@ app.put('/user/:id', function(req, res) {
 })
 
 
-//over
+
 app.put('/users/:email', function(req, res) {
 
     let emailparams = req.params.email;
@@ -174,7 +174,7 @@ app.put('/users/:email', function(req, res) {
         })
 })
 
-//over
+
 app.put('/userss/:id', function(req, res) {
 
     let id = req.params.id;
@@ -250,7 +250,7 @@ app.delete('/user/:id', function(req, res) {
 
 //Company related task
 
-//over
+
 app.get('/company', function(req, res) {
 
     async.series([
