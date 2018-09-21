@@ -344,6 +344,8 @@ app.put('/company/:id', function(req, res) {
 
     let id = req.params.id;
     let email = req.body.email;
+    let companyName = req.body.companyName;
+    let fax = req.body.fax;
 
     async.series([
             function(callback) {
