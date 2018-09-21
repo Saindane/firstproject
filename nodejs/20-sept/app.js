@@ -14,11 +14,11 @@ db.once('open', function() { console.log("Connected to MongoDb"); })
 
 db.on('error', function(err) { console.log(err); })
 
-app.get('/allusers', function(req, res) {
+app.get('/user', function(req, res) {
 
     async.series([
         function(callback) {
-            User.find({}, function(err, docs) {
+            User.find({ status: { "$ne": 'deleted' } }, function(err, docs) {
                 callback(null, docs);
             })
         }
@@ -31,40 +31,54 @@ app.get('/allusers', function(req, res) {
     })
 })
 
-/*
-search pattern api
-app.get()
-*/
+
+
+app.get('/user/:searchPattern', function(req, res) {
+
+    let searchPattern = req.params.searchPattern;
+
+    async.series([
+        function(callback) {
+            User.find({ $and: [{ 'userInfo.userName': { $regex: searchPattern } }, { status: { "$ne": 'deleted' } }] }, function(err, docs) {
+                callback(null, docs);
+            })
+        }
+    ], function(error, data) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.send(data);
+        }
+    })
+})
 
 
 
-//url = http://localhost:8090/adduser
-app.post('/adduser', function(req, res) {
 
-    console.log("adduser");
-    let emailregex = "[a-zA-Z0-9._-:]+@[a-zA-Z0-9._-]+\\.+[a-z._-]+";
+
+app.post('/user', function(req, res) {
+
+
     let email = req.body.email;
     let data = req.body;
     data.status = "activated";
 
-    // var pattern = /\d+\.?\d*|\.\d+/;
-
-    //In that email regex is remaining
-    /* if (emailregex.test(email)) {
-         console.log("true");
-     } else {
-         console.log("false");
-     }*/
+    var re = /^([a-zA-Z0-9_\@])+\@(([a-zA-Z0-9_\@])+\.)+([a-zA-Z0-9]{2,4})+$/
 
     async.series([
+
         function(callback) {
-            User.find({ "email": email }, function(err, docs) {
-                if (docs.length !== 0) {
-                    callback('User is  already exist');
-                } else {
-                    callback()
-                }
-            })
+            if (re.test(email)) {
+                User.find({ "email": email }, function(err, docs) {
+                    if (docs.length !== 0) {
+                        callback('User is  already exist');
+                    } else {
+                        callback()
+                    }
+                })
+            } else {
+                res.send("email isnot valid")
+            }
         },
         function(callback) {
             let user = new User(data);
@@ -98,7 +112,7 @@ app.put('/user/:id', function(req, res) {
 
     async.series([
             function(callback) {
-                User.find({ $and: [{ '_id': id }, { 'email': email }] }, [{ $elemMatch: { '_id': id } }], [{ $elemMatch: { 'email': email } }],
+                User.find({ $and: [{ '_id': id }, { 'email': email }, { status: { "$ne": 'deleted' } }] },
                     function(err, docs) {
                         console.log(docs);
                         if (docs.length > 0) {
@@ -143,7 +157,7 @@ app.put('/users/:email', function(req, res) {
 
     async.series([
             function(callback) {
-                User.find({ $and: [{ 'email': emailparams }, { 'email': email }] }, [{ $elemMatch: { 'email': emailparams } }], [{ $elemMatch: { 'email': email } }],
+                User.find({ $and: [{ 'email': emailparams }, { 'email': email }, { status: { "$ne": 'deleted' } }] },
                     function(err, docs) {
                         console.log(docs);
                         if (docs.length > 0) {
@@ -182,7 +196,7 @@ app.put('/userss/:id', function(req, res) {
 
     async.series([
             function(callback) {
-                User.find({ $or: [{ 'email': id }, { '_id': id }] }, { status: { "$not": 'deleted' } }, [{ $elemMatch: { '_id': id } }], [{ $elemMatch: { 'email': id } }],
+                User.find({ and: [{ $or: [{ 'email': id }, { '_id': id }] }, { status: { "$ne": 'deleted' } }] },
                     function(err, docs) {
                         console.log(docs);
                         if (docs.length > 0) {
@@ -220,7 +234,7 @@ app.delete('/user/:id', function(req, res) {
     async.series([
         function(callback) {
 
-            User.find({ $or: [{ "_id": id }, { "email": id }] }, function(err, docs) {
+            User.find({ $and: [{ $or: [{ "_id": id }, { "email": id }] }, { status: { "$ne": 'deleted' } }] }, function(err, docs) {
                 if (docs.length !== 0) {
                     callback();
                 } else {
@@ -248,7 +262,7 @@ app.delete('/user/:id', function(req, res) {
     })
 })
 
-//Company related task
+
 
 
 app.get('/company', function(req, res) {
@@ -269,15 +283,28 @@ app.get('/company', function(req, res) {
     })
 })
 
-app.get('/')
+
+app.get('/company/:companyName', function(req, res) {
+
+    let companyName = req.params.companyName;
+    async.series([
+        function(callback) {
+            Company.aggregate([{ $match: { 'companyName': companyName } }], function(err, docs) {
+                console.log(docs);
+                callback(null, docs);
+            })
+        }
+    ], function(error, data) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.send(data);
+        }
+    })
+})
 
 
 
-
-
-
-
-//url = http://localhost:8090/company
 app.post('/company', function(req, res) {
 
     let email = req.body.companyInfo.userInfo.userEmail[0];
@@ -359,7 +386,7 @@ app.delete('/company/:id', function(req, res) {
     async.series([
         function(callback) {
 
-            Company.find({ "_id": id }, function(err, docs) {
+            Company.find({ $and: [{ "_id": id }, { 'companyInfo.status': { "$ne": 'deleted' } }] }, function(err, docs) {
                 if (docs.length !== 0) {
                     callback();
                 } else {
@@ -386,17 +413,6 @@ app.delete('/company/:id', function(req, res) {
         }
     })
 })
-
-
-
-
-
-
-
-
-
-
-
 
 
 
