@@ -36,10 +36,11 @@ app.get('/user', function(req, res) {
 app.get('/user/:searchPattern', function(req, res) {
 
     let searchPattern = req.params.searchPattern;
+    let pattern = new RegExp('^' + searchPattern);
 
     async.series([
         function(callback) {
-            User.find({ $and: [{ 'userInfo.userName': { $regex: searchPattern } }, { status: { "$ne": 'deleted' } }] }, function(err, docs) {
+            User.find({ $and: [{ 'userInfo.userName': pattern }, { status: { "$ne": 'deleted' } }] }, function(err, docs) {
                 callback(null, docs);
             })
         }
@@ -63,12 +64,14 @@ app.post('/user', function(req, res) {
     let data = req.body;
     data.status = "activated";
 
+
     var re = /^([a-zA-Z0-9_\@])+\@(([a-zA-Z0-9_\@])+\.)+([a-zA-Z0-9]{2,4})+$/
 
     async.series([
 
         function(callback) {
-            if (re.test(email)) {
+            if (re.test(email) && data.status !== 'deleted') {
+
                 User.find({ "email": email }, function(err, docs) {
                     if (docs.length !== 0) {
                         callback('User is  already exist');
@@ -77,7 +80,7 @@ app.post('/user', function(req, res) {
                     }
                 })
             } else {
-                res.send("email isnot valid")
+                res.send("Provided data isnot valid")
             }
         },
         function(callback) {
@@ -94,7 +97,7 @@ app.post('/user', function(req, res) {
         if (error) {
             res.send(error);
         } else {
-            res.send(data);
+            res.send(data[1]);
         }
     })
 })
@@ -107,8 +110,6 @@ app.put('/user/:id', function(req, res) {
     let email = req.body.email;
     let userName = req.body.userName;
     let address = req.body.address;
-
-
 
     async.series([
             function(callback) {
@@ -129,16 +130,28 @@ app.put('/user/:id', function(req, res) {
                             console.log(err);
                             return;
                         } else {
-                            callback(null, 'update user with new data')
+                            callback()
                         }
                     })
             },
+            function(callback) {
+                User.find({ '_id': id },
+                    function(err, docs) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        } else {
+                            callback(null, docs)
+                        }
+                    })
+            },
+
         ],
         function(error, data) {
             if (error) {
                 res.send(error);
             } else {
-                res.send(data);
+                res.send(data[2]);
             }
         })
 })
@@ -174,7 +187,18 @@ app.put('/users/:email', function(req, res) {
                             console.log(err);
                             return;
                         } else {
-                            callback(null, 'update user with new data')
+                            callback()
+                        }
+                    })
+            },
+            function(callback) {
+                User.find({ 'email': emailparams },
+                    function(err, docs) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        } else {
+                            callback(null, docs)
                         }
                     })
             },
@@ -183,7 +207,7 @@ app.put('/users/:email', function(req, res) {
             if (error) {
                 res.send(error);
             } else {
-                res.send(data);
+                res.send(data[2]);
             }
         })
 })
@@ -290,8 +314,11 @@ app.get('/company/:companyName', function(req, res) {
     async.series([
         function(callback) {
             Company.aggregate([{ $match: { 'companyName': companyName } }], function(err, docs) {
-                console.log(docs);
-                callback(null, docs);
+                if (docs.length !== 0) {
+                    callback(null, docs);
+                } else {
+                    callback('CompanyName Not Found');
+                }
             })
         }
     ], function(error, data) {
@@ -313,13 +340,16 @@ app.post('/company', function(req, res) {
 
     async.series([
         function(callback) {
-            User.find({ "email": email }, function(err, docs) {
-                if (docs.length !== 0) {
-                    callback()
-                } else {
-                    callback('User isnot exist');
-                }
-            })
+            if (data.companyInfo.status !== 'deleted') {
+
+                User.find({ "email": email }, function(err, docs) {
+                    if (docs.length !== 0) {
+                        callback()
+                    } else {
+                        callback('User isnot exist');
+                    }
+                })
+            }
         },
         function(callback) {
             let company = new Company(data);
@@ -347,9 +377,10 @@ app.put('/company/:id', function(req, res) {
     let companyName = req.body.companyName;
     let fax = req.body.fax;
 
+
     async.series([
             function(callback) {
-                User.find({ 'email': email }, [{ $elemMatch: { 'email': email } }],
+                User.find({ $and: [{ 'email': email }, { status: { "$ne": 'deleted' } }] },
                     function(err, docs) {
                         console.log(docs);
                         if (docs.length > 0) {
