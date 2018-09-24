@@ -36,6 +36,7 @@ app.get('/user', function(req, res) {
 app.get('/user/:searchPattern', function(req, res) {
 
     let searchPattern = req.params.searchPattern;
+
     let pattern = new RegExp('^' + searchPattern);
 
     async.series([
@@ -313,7 +314,7 @@ app.get('/company/:companyName', function(req, res) {
     let companyName = req.params.companyName;
     async.series([
         function(callback) {
-            Company.aggregate([{ $match: { 'companyName': companyName } }], function(err, docs) {
+            Company.aggregate([{ $match: { 'companyName': companyName } }, { $match: { 'companyInfo.status': { "$ne": 'deleted' } } }], function(err, docs) {
                 if (docs.length !== 0) {
                     callback(null, docs);
                 } else {
@@ -349,6 +350,8 @@ app.post('/company', function(req, res) {
                         callback('User isnot exist');
                     }
                 })
+            } else {
+                res.send("Provided data isnot valid");
             }
         },
         function(callback) {
