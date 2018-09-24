@@ -55,7 +55,7 @@ app.get('/emp', function(req, res) {
                 if (result.length !== 0) {
                     callback(null, result)
                 } else {
-                    callback('Country Not Found');
+                    callback('Error');
                 }
             })
         }
