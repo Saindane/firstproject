@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<productData xmlns:bpi="urn:gs1:tsd:basic_product_information_module:xsd:1"
-             xmlns:pai="urn:gs1:tsd:product_allergen_information_module:xsd:1">
+<productData>
    <gtin>00031604042226</gtin>
    <targetMarket>840</targetMarket>
    <informationProviderGLN>0031604000004</informationProviderGLN>
