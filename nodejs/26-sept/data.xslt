@@ -2,7 +2,8 @@
 <xsl:stylesheet version = "1.0" 
    xmlns:xsl = "http://www.w3.org/1999/XSL/Transform"
    xmlns:bpi="urn:gs1:tsd:basic_product_information_module:xsd:1"
-   xmlns:pai="urn:gs1:tsd:product_allergen_information_module:xsd:1">   
+   xmlns:pai="urn:gs1:tsd:product_allergen_information_module:xsd:1"
+   exclude-result-prefixes = "xsl bpi pai">   
    <xsl:output method="xml" indent="yes"/>
  
 		 <xsl:template match="/">
