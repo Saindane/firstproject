@@ -1,0 +1,50 @@
+<h1>User.html page</h1>
+
+<table>
+    <tr>
+        <td>UserName</td>
+        <td><input type="text" ng-model="username"></td>
+    </tr>
+    <tr>
+        <td>Address</td>
+        <td><input type="text" ng-model="address"></td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td><input type="text" ng-model="email"></td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td><input type="text" ng-model="password"></td>
+    </tr>
+    <tr>
+        <th><input id="submit" type="submit" name="submit" value="Adduser" ng-click="adduser()" /></th>
+    </tr>
+</table>
+
+
+
+
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>UserName</th>
+        <th>Address</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>status</th>
+        <th colspan="2">Action</th>
+
+    </tr>
+    <tr ng-repeat="(key,value) in userlist[0]">
+        <td>{{value._id}}</td>
+        <td>{{value.userInfo.userName}}</td>
+        <td>{{value.userInfo.address}}</td>
+        <td>{{value.email}}</td>
+        <td>{{value.password}}</td>
+        <td>{{value.status}}</td>
+        <td><input id="delete" type="submit" name="edit" value="X" ng-click="remove(value._id)" /></td>
+        <td><input id="edit" type="submit" name="edit" value="Edit" /></td>
+    </tr>
+
+</table>

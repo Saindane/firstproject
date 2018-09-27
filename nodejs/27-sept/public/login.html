@@ -1,0 +1,20 @@
+<form name="myForm">
+    <table>
+        <tr>
+            <td>Email</td>
+            <td><input type="text" name="email" ng-model="email" required></td>
+            <td><span ng-show="myForm.email.$touched && myForm.email.$invalid">Oops! Email field is required.</span></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" name="password" ng-model="password" required></td>
+            <td><span ng-show="myForm.password.$touched && myForm.password.$invalid">Oops! Password field is required.</span></td>
+        </tr>
+        <tr>
+            <td>
+                <!--Here is using of ng-disabled-->
+                <input type="submit" ng-click="submit()" ng-disabled="myForm.$invalid || myForm.$pristine" />
+            </td>
+        </tr>
+    </table>
+</form>
