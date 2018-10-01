@@ -7,8 +7,13 @@ app.controller("loginCtrl", ['$scope', '$http', '$location', function($scope, $h
         console.log($scope.email);
         console.log($scope.password);
         $http.post('/login', $scope.data).then(function(response) {
-            console.log(response.data[0]);
-            $location.path(response.data[0]);
+            if (response.data[0] == 'user') {
+                console.log(response.data[0]);
+                $location.path(response.data[0]);
+            } else {
+                alert("email and password not match")
+                $location.path('/');
+            }
         });
     }
 }]);

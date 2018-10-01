@@ -1,10 +1,9 @@
-app.controller("companyCtrl", ['$scope', '$http', '$uibModal', function($scope, $http, $uibModal) {
+app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices', function($scope, $http, $uibModal, companyServices) {
 
     var updatedData = {};
     var _id;
 
     $scope.open = function(id) {
-        console.log("hii");
         _id = id;
         var modalInstance = $uibModal.open({
             templateUrl: 'lalit.html',
@@ -20,30 +19,20 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', function($scope, 
         })
     };
 
+    var refresh = function() {
+        companyServices.getAllCompanies().then(function(response) {
+            $scope.companieslist = response.data;
+        });
+    };
+    refresh();
+
     var update = function() {
-        $http.put('/company/' + _id, updatedData).then(function(response) {
+        companyServices.updateData(_id, updatedData).then(function(response) {
+            alert(response.data);
             refresh();
         })
     }
 
-
-
-
-
-
-
-
-
-
-    var refresh = function() {
-        $http.get('/companies').then(function(response) {
-            console.log("I got the data I requested");
-            $scope.companieslist = response.data;
-            console.log($scope.userlist);
-        });
-    };
-
-    refresh();
 
     $scope.addcompany = function() {
         console.log($scope.username);
@@ -54,26 +43,27 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', function($scope, 
         $scope.data.companyInfo.status = "activated";
         $scope.data.companyName = $scope.companyname;
 
-        $http.post('/company', $scope.data).then(function(response) {
-            console.log(response);
-            refresh();
-        });
-    };
-
-
-    $scope.remove = function(id) {
-        console.log(id);
-        $http.delete('/company/' + id).then(function(response) {
+        companyServices.addCompany($scope.data).then(function(response) {
+            alert(response.data);
             refresh();
         });
     };
 
     $scope.deactivate = function(id) {
         console.log(id);
-        $http.put('/companystatus/' + id).then(function(response) {
+        companyServices.deactiveCompany(id).then(function(response) {
+            alert(response.data);
             refresh();
         })
     }
+
+    $scope.remove = function(id) {
+        if (confirm("Are you sure you want to delete this item?")) {
+            companyServices.deleteCompany(id).then(function(response) {
+                refresh();
+            });
+        }
+    };
 
 
 }]);

@@ -46,7 +46,6 @@ app.get('/user', function(req, res) {
     async.series([
         function(callback) {
             User.find({ status: 'activated' }, function(err, docs) {
-                console.log(docs);
                 callback(null, docs);
             })
         }
@@ -95,6 +94,7 @@ app.post('/user', function(req, res) {
 
 app.put('/user/:email', function(req, res) {
 
+
     let email = req.params.email;
 
     let address = req.body.address;
@@ -105,7 +105,6 @@ app.put('/user/:email', function(req, res) {
             function(callback) {
                 User.find({ 'email': email },
                     function(err, docs) {
-                        console.log(docs);
                         if (docs.length > 0) {
                             callback()
                         } else {
@@ -120,7 +119,7 @@ app.put('/user/:email', function(req, res) {
                             console.log(err);
                             return;
                         } else {
-                            callback(null, "DOne")
+                            callback(null, "Data Updated Successfully")
                         }
                     })
             }
@@ -129,7 +128,7 @@ app.put('/user/:email', function(req, res) {
             if (error) {
                 res.send(error);
             } else {
-                res.send(data[2]);
+                res.send(data[1]);
             }
         })
 })
@@ -138,13 +137,11 @@ app.put('/user/:email', function(req, res) {
 app.put('/status/:id', function(req, res) {
 
     let id = req.params.id;
-    console.log(id);
 
     async.series([
             function(callback) {
                 User.find({ '_id': id },
                     function(err, docs) {
-                        console.log(docs);
                         if (docs.length > 0) {
                             callback()
                         } else {
@@ -159,7 +156,7 @@ app.put('/status/:id', function(req, res) {
                             console.log(err);
                             return;
                         } else {
-                            callback()
+                            callback(null, "Status Updated Successfully")
                         }
                     })
             }
@@ -168,7 +165,7 @@ app.put('/status/:id', function(req, res) {
             if (error) {
                 res.send(error);
             } else {
-                res.send(data[2]);
+                res.send(data[1]);
             }
         })
 })
@@ -215,7 +212,6 @@ app.get('/companies', function(req, res) {
     async.series([
         function(callback) {
             Company.find({ 'companyInfo.status': 'activated' }, function(err, docs) {
-                console.log(docs);
                 callback(null, docs);
             })
         }
@@ -236,7 +232,7 @@ app.post('/company', function(req, res) {
         if (err) {
             console.log(err);
         } else {
-            res.send("comapny added")
+            res.send("company added")
         }
     })
 })
@@ -251,7 +247,6 @@ app.put('/companystatus/:id', function(req, res) {
             function(callback) {
                 Company.find({ '_id': id },
                     function(err, docs) {
-                        console.log(docs);
                         if (docs.length > 0) {
                             callback()
                         } else {
@@ -266,7 +261,7 @@ app.put('/companystatus/:id', function(req, res) {
                             console.log(err);
                             return;
                         } else {
-                            callback()
+                            callback(null, 'CompanyStatus is updated')
                         }
                     })
             }
@@ -275,7 +270,7 @@ app.put('/companystatus/:id', function(req, res) {
             if (error) {
                 res.send(error);
             } else {
-                res.send(data[2]);
+                res.send(data[1]);
             }
         })
 })
@@ -294,7 +289,6 @@ app.put('/company/:id', function(req, res) {
             function(callback) {
                 Company.find({ '_id': id },
                     function(err, docs) {
-                        console.log(docs);
                         if (docs.length > 0) {
                             callback()
                         } else {
@@ -309,7 +303,7 @@ app.put('/company/:id', function(req, res) {
                             console.log(err);
                             return;
                         } else {
-                            callback(null, "DOne")
+                            callback(null, "CompanyData Updated Sucessfully")
                         }
                     })
             }
@@ -318,15 +312,10 @@ app.put('/company/:id', function(req, res) {
             if (error) {
                 res.send(error);
             } else {
-                res.send(data[2]);
+                res.send(data[1]);
             }
         })
 })
-
-
-
-
-
 
 
 
@@ -352,7 +341,7 @@ app.delete('/company/:id', function(req, res) {
                     console.log(err);
                     return;
                 } else {
-                    callback(null, 'DataDeleted Successfully')
+                    callback(null, 'Company dataDeleted Successfully')
                 }
             })
         }
@@ -365,10 +354,6 @@ app.delete('/company/:id', function(req, res) {
         }
     })
 })
-
-
-
-
 
 
 

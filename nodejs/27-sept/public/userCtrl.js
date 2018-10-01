@@ -1,4 +1,4 @@
-app.controller("userCtrl", ['$scope', '$http', '$uibModal', function($scope, $http, $uibModal) {
+app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', function($scope, $http, $uibModal, userServices) {
 
     var updatedData = {};
     var emailparam;
@@ -19,23 +19,26 @@ app.controller("userCtrl", ['$scope', '$http', '$uibModal', function($scope, $ht
         })
     };
 
+    var refresh = function() {
+        userServices.getAllUsers().then(function(response) {
+                $scope.userlist = response.data;
+            },
+            function(error) {
+
+            });
+    };
+
+    refresh();
+
+
     var update = function() {
         console.log(emailparam);
-        $http.put('/user/' + emailparam, updatedData).then(function(response) {
+        userServices.updateData(emailparam, updatedData).then(function(response) {
+            alert(response.data);
             refresh();
         })
     }
 
-
-    var refresh = function() {
-        $http.get('/user').then(function(response) {
-            console.log("I got the data I requested");
-            $scope.userlist = response.data;
-            console.log($scope.userlist);
-        });
-    };
-
-    refresh();
 
 
     $scope.adduser = function() {
@@ -47,26 +50,27 @@ app.controller("userCtrl", ['$scope', '$http', '$uibModal', function($scope, $ht
         $scope.data.password = $scope.password;
         $scope.data.status = "activated";
 
-        $http.post('/user', $scope.data).then(function(response) {
-            console.log(response);
+        userServices.setUser($scope.data).then(function(response) {
+            alert(response.data);
             refresh();
         });
     };
 
     $scope.deactivate = function(id) {
-        console.log(id);
-        $http.put('/status/' + id).then(function(response) {
+        userServices.deactiveUser(id).then(function(response) {
+            alert(response.data);
             refresh();
         })
     }
 
 
-
     $scope.remove = function(id) {
-        console.log(id);
-        $http.delete('/user/' + id).then(function(response) {
-            refresh();
-        });
+        if (confirm("Are you sure you want to delete this item?")) {
+            userServices.deleteUser(id).then(function(response) {
+                refresh();
+            });
+        }
+
     };
 
 
