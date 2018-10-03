@@ -2,44 +2,45 @@
 <br>
 <div class="container">
     <form class="form-horizontal" name="myForm">
-        <div class="form-group" ng-class="{'has-error':myForm.username.$touched && myForm.username.$invalid}">
+        <div class="form-group">
             <label class="control-label col-sm-2" for="username">UserName:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="username" placeholder="Enter UserName" name="username" ng-model="username" required>
+                <span class="hint" ng-show="!myForm.username.$error.required" style="color:red">Hint: UserName field is required</span>
             </div>
-            <span class="help-block" ng-show="myForm.username.$error.required && myForm.username.$touched" style="color:red">Oops! UserName field is required.</span>
-
         </div>
-        <div class="form-group" ng-class="{'has-error':myForm.address.$touched && myForm.address.$invalid}">
+        <div class="form-group">
             <label class="control-label col-sm-2" for="address">Address:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address" ng-model="address" required>
+                <span class="hint" ng-show="!myForm.address.$error.required" style="color:red">Hint:Address field is required</span>
             </div>
-            <span class="help-block" ng-show="myForm.address.$error.required && myForm.address.$touched" style="color:red">Oops! Address field is required.</span>
 
         </div>
-        <div class="form-group" ng-class="{'has-error':myForm.email.$touched && myForm.email.$invalid}">
+        <div class="form-group">
             <label class="control-label col-sm-2" for="email">Email:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="email" placeholder="Enter Email" name="email" ng-model="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+                <span class="hint" ng-show="!myForm.email.$error.required" style="color:red">Hint:abc@text.com</span>
             </div>
-            <span class="help-block" ng-show="myForm.email.$error.required && myForm.email.$touched" style="color:red">Oops! Email isnot validFormat.</span>
 
         </div>
         <div class="form-group" ng-class="{'has-error':myForm.email.$touched && myForm.email.$invalid}">
             <label class="control-label col-sm-2" for="password">Password:</label>
             <div class="col-sm-3">
                 <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" ng-model="password" required>
+                <span class="hint" ng-show="!myForm.password.$error.required" style="color:red">Password field is required.</span>
             </div>
-            <span class="help-block" ng-show="myForm.password.$error.required && myForm.password.$touched" style="color:red">Oops! Password field is required.</span>
 
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default" ng-click="adduser()" ng-disabled="myForm.$invalid || myForm.$pristine">Adduser</button>
+                <button type="submit" class="btn btn-default" ng-click="updateuser()" ng-if="value" ng-disabled="myForm.$invalid || myForm.$pristine">Updateuser</button>
             </div>
         </div>
-    </form>
+</div>
+</form>
 </div>
 
 
@@ -65,7 +66,7 @@
             <td>{{value.password}}</td>
             <td>{{value.status}}</td>
             <td><button class="btn" id="delete" ng-click="remove(value._id)"><i class="fa fa-close"></i> Delete</button></td>
-            <td><button class="btn" id="edit" ng-click="open(value.email)"><i class="fa fa-pencil"></i> Edit</button></td>
+            <td><button class="btn" id="edit" ng-click="edit(value.email)"><i class="fa fa-pencil"></i> Edit</button></td>
             <td><button class="btn" id="deactivate" ng-click="deactivate(value._id)"><i class="fa fa-window-close"></i> Deactivate</button></td>
         </tr>
     </tbody>
@@ -74,44 +75,3 @@
 
 <br>
 <a href="#!companies" class="btn btn-info" role="button">Companies Page</a>
-
-
-
-<script type="text/ng-template" id="lalit.html">
-    <form class="form-horizontal" name="myForm">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">UserInformation Updation</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-
-                        <div class="form-group" ng-class="{'has-error':myForm.username.$touched && myForm.username.$invalid}">
-                            <label for="username">UserName</label>
-                            <input type="text" class="form-control" id="username" ng-model="username" name="username" required/>
-                        </div>
-                        <span class="help-block" ng-show="myForm.username.$error.required && myForm.username.$touched" style="color:red">Oops! UserName field is required.</span>
-
-                        <div class="form-group" ng-class="{'has-error':myForm.address.$touched && myForm.address.$invalid}">
-                            <label for="address">Address</label>
-                            <input type="text" class="form-control" id="address" ng-model="address" name="address" required />
-                        </div>
-                        <span class="help-block" ng-show="myForm.address.$error.required && myForm.address.$touched" style="color:red">Oops! Address field is required.</span>
-
-                        <div class="form-group" ng-class="{'has-error':myForm.password.$touched && myForm.password.$invalid}">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" ng-model="password" name="password" required/>
-                        </div>
-                        <span class="help-block" ng-show="myForm.password.$error.required && myForm.password.$touched" style="color:red">Oops! Password field is required.</span>
-
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-default" id="submit" ng-click="submit()" ng-disabled="myForm.$invalid || myForm.$pristine" />
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</script>

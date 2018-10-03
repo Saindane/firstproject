@@ -4,6 +4,10 @@ app.service("companyServices", ["$http", '$rootScope', function($http, $rootScop
         return $http.get("/companies");
     }
 
+    this.getSingleCompany = function(_id) {
+        return $http.get("/company/" + _id);
+    }
+
     this.updateData = function(_id, updatedData) {
         return $http.put('/company/' + _id, updatedData);
     }

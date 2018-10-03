@@ -59,6 +59,27 @@ app.get('/user', function(req, res) {
 })
 
 
+app.get('/user/:email', function(req, res) {
+
+    var emailparam = req.params.email;
+
+    async.series([
+        function(callback) {
+            User.find({ $and: [{ status: 'activated' }, { email: emailparam }] }, function(err, docs) {
+                callback(null, docs);
+            })
+        }
+    ], function(error, data) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.send(data);
+        }
+    })
+})
+
+
+
 app.post('/user', function(req, res) {
 
     async.series([
@@ -96,10 +117,12 @@ app.put('/user/:email', function(req, res) {
 
 
     let email = req.params.email;
-
+    console.log(email);
     let address = req.body.address;
     let userName = req.body.userName;
     let password = req.body.password;
+    let emailparam = req.body.email;
+
 
     async.series([
             function(callback) {
@@ -113,10 +136,10 @@ app.put('/user/:email', function(req, res) {
                     })
             },
             function(callback) {
-                User.update({ 'email': email }, { '$set': { 'userInfo.userName': userName, 'userInfo.address': address, 'password': password } },
+                User.update({ 'email': email }, { '$set': { 'userInfo.userName': userName, 'userInfo.address': address, 'password': password, 'email': emailparam } },
                     function(err) {
                         if (err) {
-                            console.log(err);
+                            callback('EmailId already Present');
                             return;
                         } else {
                             callback(null, "Data Updated Successfully")
@@ -238,6 +261,26 @@ app.post('/company', function(req, res) {
 })
 
 
+app.get('/company/:id', function(req, res) {
+
+    let id = req.params.id;
+
+    async.series([
+        function(callback) {
+            Company.find({ $and: [{ 'companyInfo.status': 'activated' }, { '_id': id }] }, function(err, docs) {
+                callback(null, docs);
+            })
+        }
+    ], function(error, data) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.send(data);
+        }
+    })
+})
+
+
 app.put('/companystatus/:id', function(req, res) {
 
     let id = req.params.id;
@@ -280,24 +323,24 @@ app.put('/companystatus/:id', function(req, res) {
 app.put('/company/:id', function(req, res) {
 
     let id = req.params.id;
-
+    console.log(id);
     let registrationno = req.body.registrationno;
     let companyName = req.body.companyName;
     let faxno = req.body.faxno;
+    let useremail = req.body.useremail
 
     async.series([
             function(callback) {
-                Company.find({ '_id': id },
-                    function(err, docs) {
-                        if (docs.length > 0) {
-                            callback()
-                        } else {
-                            callback('Data not found to Update');
-                        }
-                    })
+                Company.find({ '_id': id }, function(err, docs) {
+                    if (docs.length > 0) {
+                        callback()
+                    } else {
+                        callback('Data not found to Update');
+                    }
+                })
             },
             function(callback) {
-                Company.update({ '_id': id }, { '$set': { 'companyName': companyName, 'companyInfo.registrationNo': registrationno, 'companyInfo.fax': faxno } },
+                Company.update({ '_id': id }, { '$set': { 'companyName': companyName, 'companyInfo.registrationNo': registrationno, 'companyInfo.fax': faxno, 'companyInfo.userInfo.userEmail': useremail } },
                     function(err) {
                         if (err) {
                             console.log(err);

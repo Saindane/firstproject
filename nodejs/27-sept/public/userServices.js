@@ -4,6 +4,11 @@ app.service("userServices", ["$http", '$rootScope', function($http, $rootScope) 
         return $http.get("/user");
     }
 
+    this.getSingleUser = function(emailparam) {
+        return $http.get("/user/" + emailparam);
+    }
+
+
     this.updateData = function(emailparam, updatedData) {
         return $http.put('/user/' + emailparam, updatedData);
     }
@@ -19,7 +24,6 @@ app.service("userServices", ["$http", '$rootScope', function($http, $rootScope) 
     this.deleteUser = function(id) {
         return $http.delete('/user/' + id);
     }
-
 
 
 }]);

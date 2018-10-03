@@ -12,6 +12,9 @@ app.config(function($routeProvider) {
             templateUrl: 'company.html',
             controller: 'companyCtrl'
         })
+        .when('/error', {
+            templateUrl: 'error.html'
+        })
         .otherwise({
             template: "<h1>None</h1><p>Content Not Found</p>"
         });

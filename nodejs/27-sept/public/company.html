@@ -2,41 +2,43 @@
 <br>
 <div class="container">
     <form class="form-horizontal" name="myForm">
-        <div class="form-group" ng-class="{'has-error':myForm.useremail.$touched && myForm.useremail.$invalid}">
+        <div class="form-group">
             <label class="control-label col-sm-2" for="useremail">UserEmail:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="useremail" placeholder="Enter UserEmail" name="useremail" ng-model="useremail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+                <span class="hint" ng-show="!myForm.useremail.$error.required" style="color:red">Hint: abc@gmail.com</span>
             </div>
-            <span class="help-block" ng-show="myForm.useremail.$error.required && myForm.useremail.$touched" style="color:red">Oops! UserEmail isnot validFormat.</span>
 
         </div>
-        <div class="form-group" ng-class="{'has-error':myForm.fax.$touched && myForm.fax.$invalid}">
+        <div class="form-group">
             <label class="control-label col-sm-2" for="fax">FaxNo:</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" id="fax" placeholder="Enter FaxNo" name="fax" ng-model="fax" required>
+                <input type="text" class="form-control" id="fax" placeholder="Enter FaxNo" name="fax" ng-model="fax" pattern="[0-9]{5}" required>
+                <span class="hint" ng-show="!myForm.fax.$error.required" style="color:red">Hint: FaxNo should be 5 digit</span>
             </div>
-            <span class="help-block" ng-show="myForm.fax.$error.required && myForm.fax.$touched" style="color:red">Oops! FaxNo field is required.</span>
 
         </div>
         <div class="form-group" ng-class="{'has-error':myForm.registrationNo.$touched && myForm.registrationNo.$invalid}">
             <label class="control-label col-sm-2" for="registrationNo">RegistrationNo:</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" id="registrationNo" placeholder="Enter RegistrationNo" name="registrationNo" ng-model="registrationNo" required>
+                <input type="text" class="form-control" id="registrationNo" placeholder="Enter RegistrationNo" name="registrationNo" ng-model="registrationNo" pattern="[0-9]{7}" required>
+                <span class="hint" ng-show="!myForm.registrationNo.$error.required" style="color:red">Hint: RegistrationNo should be 7 digit</span>
+
             </div>
-            <span class="help-block" ng-show="myForm.registrationNo.$error.required && myForm.registrationNo.$touched" style="color:red">Oops! RegistrationNo field is required.</span>
 
         </div>
         <div class="form-group" ng-class="{'has-error':myForm.companyname.$touched && myForm.companyname.$invalid}">
             <label class="control-label col-sm-2" for="companyname">CompanyName:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="companyname" placeholder="Enter CompanyName" name="companyname" ng-model="companyname" required>
-            </div>
-            <span class="help-block" ng-show="myForm.companyname.$error.required && myForm.companyname.$touched" style="color:red">Oops! CompanyName field is required.</span>
+                <span class="hint" ng-show="!myForm.companyname.$error.required" style="color:red">Hint: CompanyName is required</span>
 
+            </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default" ng-click="addcompany()" ng-disabled="myForm.$invalid || myForm.$pristine">Addcompany</button>
+                <button type="submit" class="btn btn-default" ng-click="updatecompany()" ng-if="value" ng-disabled="myForm.$invalid || myForm.$pristine">Updatecompany</button>
             </div>
         </div>
     </form>
@@ -63,7 +65,7 @@
             <td>{{value.companyInfo.status}}</td>
             <td>{{value.companyName}}</td>
             <td><button class="btn" id="delete" ng-click="remove(value._id)"><i class="fa fa-close"></i> Delete</button></td>
-            <td><button class="btn" id="edit" ng-click="open(value._id)"><i class="fa fa-pencil"></i> Edit</button></td>
+            <td><button class="btn" id="edit" ng-click="edit(value._id)"><i class="fa fa-pencil"></i> Edit</button></td>
             <td><button class="btn" id="deactivate" ng-click="deactivate(value._id)"><i class="fa fa-window-close"></i> Deactivate</button></td>
         </tr>
     </tbody>
@@ -72,42 +74,3 @@
 
 <br>
 <a href="#!user" class="btn btn-info" role="button">User Page</a>
-
-
-<script type="text/ng-template" id="lalit.html">
-    <form class="form-horizontal" name="myForm">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">UserInformation Updation</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-
-                        <div class="form-group" ng-class="{'has-error':myForm.companyname.$touched && myForm.companyname.$invalid}">
-                            <label for="companyname">CompanyName</label>
-                            <input type="text" class="form-control" id="companyname" ng-model="companyname" name="companyname" required/>
-                        </div>
-                        <span class="help-block" ng-show="myForm.companyname.$error.required && myForm.companyname.$touched" style="color:red">Oops! CompanyName field is required.</span>
-
-                        <div class="form-group" ng-class="{'has-error':myForm.faxno.$touched && myForm.faxno.$invalid}">
-                            <label for="faxno">FaxNo</label>
-                            <input type="text" class="form-control" id="faxno" ng-model="faxno" name="faxno" required />
-                        </div>
-                        <span class="help-block" ng-show="myForm.faxno.$error.required && myForm.faxno.$touched" style="color:red">Oops! FaxNo field is required.</span>
-
-                        <div class="form-group" ng-class="{'has-error':myForm.registrationno.$touched && myForm.registrationno.$invalid}">
-                            <label for="registrationno">RegistrationNo</label>
-                            <input type="text" class="form-control" id="registrationno" ng-model="registrationno" name="registrationno" required/>
-                        </div>
-                        <span class="help-block" ng-show="myForm.registrationno.$error.required && myForm.registrationno.$touched" style="color:red">Oops! RegistrationNo field is required.</span>
-
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-default" id="submit" ng-click="submit()" ng-disabled="myForm.$invalid || myForm.$pristine" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</script>

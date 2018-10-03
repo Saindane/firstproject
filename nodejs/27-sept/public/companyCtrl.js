@@ -1,37 +1,17 @@
-app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices', function($scope, $http, $uibModal, companyServices) {
+app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices', '$location', function($scope, $http, $uibModal, companyServices, $location) {
 
     var updatedData = {};
     var _id;
 
-    $scope.open = function(id) {
-        _id = id;
-        var modalInstance = $uibModal.open({
-            templateUrl: 'lalit.html',
-            controller: function($scope, $uibModalInstance) {
-                $scope.submit = function() {
-                    $uibModalInstance.close();
-                    updatedData.companyName = $scope.companyname;
-                    updatedData.faxno = $scope.faxno;
-                    updatedData.registrationno = $scope.registrationno;
-                    update();
-                };
-            }
-        })
-    };
-
     var refresh = function() {
         companyServices.getAllCompanies().then(function(response) {
-            $scope.companieslist = response.data;
-        });
+                $scope.companieslist = response.data;
+            },
+            function(error) {
+                $location.path('/error');
+            });
     };
     refresh();
-
-    var update = function() {
-        companyServices.updateData(_id, updatedData).then(function(response) {
-            alert(response.data);
-            refresh();
-        })
-    }
 
 
     $scope.addcompany = function() {
@@ -44,24 +24,63 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices'
         $scope.data.companyName = $scope.companyname;
 
         companyServices.addCompany($scope.data).then(function(response) {
-            alert(response.data);
-            refresh();
-        });
+                alert(response.data);
+                refresh();
+            },
+            function(error) {
+                $location.path('/error');
+            });
     };
+
+    $scope.edit = function(id) {
+        _id = id;
+        companyServices.getSingleCompany(_id).then(function(response) {
+                $scope.datas = response.data[0];
+                $scope.useremail = $scope.datas[0].companyInfo.userInfo.userEmail[0];
+                $scope.fax = $scope.datas[0].companyInfo.fax;
+                $scope.registrationNo = $scope.datas[0].companyInfo.registrationNo;
+                $scope.companyname = $scope.datas[0].companyName;
+                $scope.value = true;
+            },
+            function(error) {
+                $location.path('/error');
+            })
+    }
+
+    $scope.updatecompany = function() {
+        updatedData.companyName = $scope.companyname;
+        updatedData.faxno = $scope.fax;
+        updatedData.registrationno = $scope.registrationNo;
+        updatedData.useremail = $scope.useremail;
+        console.log(updatedData);
+        companyServices.updateData(_id, updatedData).then(function(response) {
+                alert(response.data);
+                refresh();
+            },
+            function(error) {
+                $location.path('/error');
+            })
+    }
 
     $scope.deactivate = function(id) {
         console.log(id);
         companyServices.deactiveCompany(id).then(function(response) {
-            alert(response.data);
-            refresh();
-        })
+                alert(response.data);
+                refresh();
+            },
+            function(error) {
+                $location.path('/error');
+            })
     }
 
     $scope.remove = function(id) {
         if (confirm("Are you sure you want to delete this item?")) {
             companyServices.deleteCompany(id).then(function(response) {
-                refresh();
-            });
+                    refresh();
+                },
+                function(error) {
+                    $location.path('/error');
+                });
         }
     };
 
