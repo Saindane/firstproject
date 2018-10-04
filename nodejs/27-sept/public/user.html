@@ -6,14 +6,14 @@
             <label class="control-label col-sm-2" for="username">UserName:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="username" placeholder="Enter UserName" name="username" ng-model="username" required>
-                <span class="hint" ng-show="!myForm.username.$error.required" style="color:red">Hint: UserName field is required</span>
+                <span class="hint" ng-show="myForm.username.$error.required" style="color:red">Hint: UserName field is required</span>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="address">Address:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address" ng-model="address" required>
-                <span class="hint" ng-show="!myForm.address.$error.required" style="color:red">Hint:Address field is required</span>
+                <span class="hint" ng-show="myForm.address.$error.required" style="color:red">Hint:Address field is required</span>
             </div>
 
         </div>
@@ -21,21 +21,20 @@
             <label class="control-label col-sm-2" for="email">Email:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="email" placeholder="Enter Email" name="email" ng-model="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
-                <span class="hint" ng-show="!myForm.email.$error.required" style="color:red">Hint:abc@text.com</span>
+                <span class="hint" ng-show="myForm.email.$error.required" style="color:red">Hint:abc@text.com</span>
             </div>
-
         </div>
-        <div class="form-group" ng-class="{'has-error':myForm.email.$touched && myForm.email.$invalid}">
+        <div class="form-group">
             <label class="control-label col-sm-2" for="password">Password:</label>
             <div class="col-sm-3">
                 <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" ng-model="password" required>
-                <span class="hint" ng-show="!myForm.password.$error.required" style="color:red">Password field is required.</span>
+                <span class="hint" ng-show="myForm.password.$error.required" style="color:red">Password field is required.</span>
             </div>
 
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" ng-click="adduser()" ng-disabled="myForm.$invalid || myForm.$pristine">Adduser</button>
+                <button type="submit" class="btn btn-default" ng-click="adduser()" ng-disabled="myForm.$invalid || myForm.$pristine" ng-hide="hidebutton">Adduser</button>
                 <button type="submit" class="btn btn-default" ng-click="updateuser()" ng-if="value" ng-disabled="myForm.$invalid || myForm.$pristine">Updateuser</button>
             </div>
         </div>
@@ -54,7 +53,7 @@
             <th>Email</th>
             <th>Password</th>
             <th>status</th>
-            <th colspan="3">Action</th>
+            <th colspan="4">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -68,6 +67,7 @@
             <td><button class="btn" id="delete" ng-click="remove(value._id)"><i class="fa fa-close"></i> Delete</button></td>
             <td><button class="btn" id="edit" ng-click="edit(value.email)"><i class="fa fa-pencil"></i> Edit</button></td>
             <td><button class="btn" id="deactivate" ng-click="deactivate(value._id)"><i class="fa fa-window-close"></i> Deactivate</button></td>
+            <td><button class="btn" id="activate" ng-click="activate(value._id)"><i class="fa fa-check"></i> Activate</button></td>
         </tr>
     </tbody>
 </table>

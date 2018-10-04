@@ -41,6 +41,7 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices'
                 $scope.registrationNo = $scope.datas[0].companyInfo.registrationNo;
                 $scope.companyname = $scope.datas[0].companyName;
                 $scope.value = true;
+                $scope.hidebutton = true;
             },
             function(error) {
                 $location.path('/error');
@@ -56,6 +57,12 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices'
         companyServices.updateData(_id, updatedData).then(function(response) {
                 alert(response.data);
                 refresh();
+                $scope.companyname = "";
+                $scope.fax = "";
+                $scope.registrationNo = "";
+                $scope.useremail = "";
+                $scope.value = false;
+                $scope.hidebutton = false;
             },
             function(error) {
                 $location.path('/error');
@@ -65,7 +72,16 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices'
     $scope.deactivate = function(id) {
         console.log(id);
         companyServices.deactiveCompany(id).then(function(response) {
-                alert(response.data);
+                refresh();
+            },
+            function(error) {
+                $location.path('/error');
+            })
+    }
+
+    $scope.activeCompany = function(id) {
+        console.log(id);
+        companyServices.activeCompany(id).then(function(response) {
                 refresh();
             },
             function(error) {

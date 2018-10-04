@@ -6,7 +6,7 @@
             <label class="control-label col-sm-2" for="useremail">UserEmail:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="useremail" placeholder="Enter UserEmail" name="useremail" ng-model="useremail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
-                <span class="hint" ng-show="!myForm.useremail.$error.required" style="color:red">Hint: abc@gmail.com</span>
+                <span class="hint" ng-show="myForm.useremail.$error.required" style="color:red">Hint: abc@gmail.com</span>
             </div>
 
         </div>
@@ -14,30 +14,30 @@
             <label class="control-label col-sm-2" for="fax">FaxNo:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="fax" placeholder="Enter FaxNo" name="fax" ng-model="fax" pattern="[0-9]{5}" required>
-                <span class="hint" ng-show="!myForm.fax.$error.required" style="color:red">Hint: FaxNo should be 5 digit</span>
+                <span class="hint" ng-show="myForm.fax.$error.required" style="color:red">Hint: FaxNo should be 5 digit</span>
             </div>
 
         </div>
-        <div class="form-group" ng-class="{'has-error':myForm.registrationNo.$touched && myForm.registrationNo.$invalid}">
+        <div class="form-group">
             <label class="control-label col-sm-2" for="registrationNo">RegistrationNo:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="registrationNo" placeholder="Enter RegistrationNo" name="registrationNo" ng-model="registrationNo" pattern="[0-9]{7}" required>
-                <span class="hint" ng-show="!myForm.registrationNo.$error.required" style="color:red">Hint: RegistrationNo should be 7 digit</span>
+                <span class="hint" ng-show="myForm.registrationNo.$error.required" style="color:red">Hint: RegistrationNo should be 7 digit</span>
 
             </div>
 
         </div>
-        <div class="form-group" ng-class="{'has-error':myForm.companyname.$touched && myForm.companyname.$invalid}">
+        <div class="form-group">
             <label class="control-label col-sm-2" for="companyname">CompanyName:</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="companyname" placeholder="Enter CompanyName" name="companyname" ng-model="companyname" required>
-                <span class="hint" ng-show="!myForm.companyname.$error.required" style="color:red">Hint: CompanyName is required</span>
+                <span class="hint" ng-show="myForm.companyname.$error.required" style="color:red">Hint: CompanyName is required</span>
 
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" ng-click="addcompany()" ng-disabled="myForm.$invalid || myForm.$pristine">Addcompany</button>
+                <button type="submit" class="btn btn-default" ng-click="addcompany()" ng-disabled="myForm.$invalid || myForm.$pristine" ng-hide="hidebutton">Addcompany</button>
                 <button type="submit" class="btn btn-default" ng-click="updatecompany()" ng-if="value" ng-disabled="myForm.$invalid || myForm.$pristine">Updatecompany</button>
             </div>
         </div>
@@ -53,7 +53,7 @@
             <th>RegistrationNo</th>
             <th>Status</th>
             <th>CompanyName</th>
-            <th colspan="3">Action</th>
+            <th colspan="4">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -67,6 +67,7 @@
             <td><button class="btn" id="delete" ng-click="remove(value._id)"><i class="fa fa-close"></i> Delete</button></td>
             <td><button class="btn" id="edit" ng-click="edit(value._id)"><i class="fa fa-pencil"></i> Edit</button></td>
             <td><button class="btn" id="deactivate" ng-click="deactivate(value._id)"><i class="fa fa-window-close"></i> Deactivate</button></td>
+            <td><button class="btn" id="deactivate" ng-click="activeCompany(value._id)"><i class="fa fa-check"></i> activate</button></td>
         </tr>
     </tbody>
 </table>

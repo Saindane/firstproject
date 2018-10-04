@@ -42,6 +42,9 @@ app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', '$lo
                 $scope.email = $scope.datas[0].email;
                 $scope.password = $scope.datas[0].password;
                 $scope.value = true;
+                $scope.hideme = true;
+                $scope.hidebutton = true;
+
             },
             function(error) {
                 $location.path('/error');
@@ -59,6 +62,13 @@ app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', '$lo
         userServices.updateData(emailparam, updatedData).then(function(response) {
                 alert(response.data);
                 refresh();
+                $scope.hideme = false;
+                $scope.hidebutton = false;
+                $scope.value = false;
+                $scope.username = "";
+                $scope.address = "";
+                $scope.email = "";
+                $scope.password = "";
             },
             function(error) {
                 $location.path('/error');
@@ -67,7 +77,15 @@ app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', '$lo
 
     $scope.deactivate = function(id) {
         userServices.deactiveUser(id).then(function(response) {
-                alert(response.data);
+                refresh();
+            },
+            function(error) {
+                $location.path('/error');
+            })
+    }
+
+    $scope.activate = function(id) {
+        userServices.activeUser(id).then(function(response) {
                 refresh();
             },
             function(error) {

@@ -21,6 +21,10 @@ app.service("userServices", ["$http", '$rootScope', function($http, $rootScope) 
         return $http.put('/status/' + id);
     }
 
+    this.activeUser = function(id) {
+        return $http.put('/activestatus/' + id);
+    }
+
     this.deleteUser = function(id) {
         return $http.delete('/user/' + id);
     }

@@ -45,7 +45,7 @@ app.get('/user', function(req, res) {
 
     async.series([
         function(callback) {
-            User.find({ status: 'activated' }, function(err, docs) {
+            User.find({}, function(err, docs) {
                 callback(null, docs);
             })
         }
@@ -194,6 +194,42 @@ app.put('/status/:id', function(req, res) {
 })
 
 
+app.put('/activestatus/:id', function(req, res) {
+
+    let id = req.params.id;
+
+    async.series([
+            function(callback) {
+                User.find({ '_id': id },
+                    function(err, docs) {
+                        if (docs.length > 0) {
+                            callback()
+                        } else {
+                            callback('Data not found to Update');
+                        }
+                    })
+            },
+            function(callback) {
+                User.update({ '_id': id }, { '$set': { 'status': 'activated' } },
+                    function(err) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        } else {
+                            callback(null, "Status Updated Successfully")
+                        }
+                    })
+            }
+        ],
+        function(error, data) {
+            if (error) {
+                res.send(error);
+            } else {
+                res.send(data[1]);
+            }
+        })
+})
+
 
 app.delete('/user/:id', function(req, res) {
 
@@ -234,7 +270,7 @@ app.get('/companies', function(req, res) {
 
     async.series([
         function(callback) {
-            Company.find({ 'companyInfo.status': 'activated' }, function(err, docs) {
+            Company.find({}, function(err, docs) {
                 callback(null, docs);
             })
         }
@@ -319,6 +355,42 @@ app.put('/companystatus/:id', function(req, res) {
 })
 
 
+app.put('/activecompanystatus/:id', function(req, res) {
+
+    let id = req.params.id;
+    console.log(id);
+
+    async.series([
+            function(callback) {
+                Company.find({ '_id': id },
+                    function(err, docs) {
+                        if (docs.length > 0) {
+                            callback()
+                        } else {
+                            callback('Data not found to Update');
+                        }
+                    })
+            },
+            function(callback) {
+                Company.update({ '_id': id }, { '$set': { 'companyInfo.status': 'activated' } },
+                    function(err) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        } else {
+                            callback(null, 'CompanyStatus is updated')
+                        }
+                    })
+            }
+        ],
+        function(error, data) {
+            if (error) {
+                res.send(error);
+            } else {
+                res.send(data[1]);
+            }
+        })
+})
 
 app.put('/company/:id', function(req, res) {
 
