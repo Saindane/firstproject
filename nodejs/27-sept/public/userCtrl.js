@@ -76,7 +76,8 @@ app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', '$lo
     }
 
     $scope.deactivate = function(id) {
-        userServices.deactiveUser(id).then(function(response) {
+        let value = { 'status': 'deactivate' }
+        userServices.deactiveUser(id, value).then(function(response) {
                 refresh();
             },
             function(error) {
@@ -85,7 +86,9 @@ app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', '$lo
     }
 
     $scope.activate = function(id) {
-        userServices.activeUser(id).then(function(response) {
+        let value = { 'status': 'activated' }
+
+        userServices.deactiveUser(id, value).then(function(response) {
                 refresh();
             },
             function(error) {

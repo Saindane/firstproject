@@ -16,12 +16,8 @@ app.service("companyServices", ["$http", '$rootScope', function($http, $rootScop
         return $http.post('/company', data);
     }
 
-    this.deactiveCompany = function(id) {
-        return $http.put('/companystatus/' + id);
-    }
-
-    this.activeCompany = function(id) {
-        return $http.put('/activecompanystatus/' + id);
+    this.deactiveCompany = function(id, value) {
+        return $http.put('/companystatus/' + id, value);
     }
 
     this.deleteCompany = function(id) {

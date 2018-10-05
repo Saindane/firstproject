@@ -70,8 +70,9 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices'
     }
 
     $scope.deactivate = function(id) {
-        console.log(id);
-        companyServices.deactiveCompany(id).then(function(response) {
+        let value = { 'status': 'deactivate' }
+
+        companyServices.deactiveCompany(id, value).then(function(response) {
                 refresh();
             },
             function(error) {
@@ -80,8 +81,9 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices'
     }
 
     $scope.activeCompany = function(id) {
-        console.log(id);
-        companyServices.activeCompany(id).then(function(response) {
+        let value = { 'status': 'activated' }
+
+        companyServices.deactiveCompany(id, value).then(function(response) {
                 refresh();
             },
             function(error) {

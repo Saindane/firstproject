@@ -17,12 +17,8 @@ app.service("userServices", ["$http", '$rootScope', function($http, $rootScope) 
         return $http.post('/user', data);
     }
 
-    this.deactiveUser = function(id) {
-        return $http.put('/status/' + id);
-    }
-
-    this.activeUser = function(id) {
-        return $http.put('/activestatus/' + id);
+    this.deactiveUser = function(id, value) {
+        return $http.put('/status/' + id, value);
     }
 
     this.deleteUser = function(id) {

@@ -37,7 +37,6 @@ app.post('/login', function(req, res) {
             res.send(data);
         }
     })
-    console.log(req.body);
 })
 
 
@@ -117,7 +116,6 @@ app.put('/user/:email', function(req, res) {
 
 
     let email = req.params.email;
-    console.log(email);
     let address = req.body.address;
     let userName = req.body.userName;
     let password = req.body.password;
@@ -160,7 +158,7 @@ app.put('/user/:email', function(req, res) {
 app.put('/status/:id', function(req, res) {
 
     let id = req.params.id;
-
+    let status = req.body.status;
     async.series([
             function(callback) {
                 User.find({ '_id': id },
@@ -173,7 +171,7 @@ app.put('/status/:id', function(req, res) {
                     })
             },
             function(callback) {
-                User.update({ '_id': id }, { '$set': { 'status': 'deactivated' } },
+                User.update({ '_id': id }, { '$set': { 'status': status } },
                     function(err) {
                         if (err) {
                             console.log(err);
@@ -192,44 +190,6 @@ app.put('/status/:id', function(req, res) {
             }
         })
 })
-
-
-app.put('/activestatus/:id', function(req, res) {
-
-    let id = req.params.id;
-
-    async.series([
-            function(callback) {
-                User.find({ '_id': id },
-                    function(err, docs) {
-                        if (docs.length > 0) {
-                            callback()
-                        } else {
-                            callback('Data not found to Update');
-                        }
-                    })
-            },
-            function(callback) {
-                User.update({ '_id': id }, { '$set': { 'status': 'activated' } },
-                    function(err) {
-                        if (err) {
-                            console.log(err);
-                            return;
-                        } else {
-                            callback(null, "Status Updated Successfully")
-                        }
-                    })
-            }
-        ],
-        function(error, data) {
-            if (error) {
-                res.send(error);
-            } else {
-                res.send(data[1]);
-            }
-        })
-})
-
 
 app.delete('/user/:id', function(req, res) {
 
@@ -283,7 +243,6 @@ app.get('/companies', function(req, res) {
     })
 })
 
-
 app.post('/company', function(req, res) {
 
     let comapny = new Company(req.body);
@@ -295,7 +254,6 @@ app.post('/company', function(req, res) {
         }
     })
 })
-
 
 app.get('/company/:id', function(req, res) {
 
@@ -316,11 +274,10 @@ app.get('/company/:id', function(req, res) {
     })
 })
 
-
 app.put('/companystatus/:id', function(req, res) {
 
     let id = req.params.id;
-    console.log(id);
+    let status = req.body.status;
 
     async.series([
             function(callback) {
@@ -334,45 +291,7 @@ app.put('/companystatus/:id', function(req, res) {
                     })
             },
             function(callback) {
-                Company.update({ '_id': id }, { '$set': { 'companyInfo.status': 'deactivated' } },
-                    function(err) {
-                        if (err) {
-                            console.log(err);
-                            return;
-                        } else {
-                            callback(null, 'CompanyStatus is updated')
-                        }
-                    })
-            }
-        ],
-        function(error, data) {
-            if (error) {
-                res.send(error);
-            } else {
-                res.send(data[1]);
-            }
-        })
-})
-
-
-app.put('/activecompanystatus/:id', function(req, res) {
-
-    let id = req.params.id;
-    console.log(id);
-
-    async.series([
-            function(callback) {
-                Company.find({ '_id': id },
-                    function(err, docs) {
-                        if (docs.length > 0) {
-                            callback()
-                        } else {
-                            callback('Data not found to Update');
-                        }
-                    })
-            },
-            function(callback) {
-                Company.update({ '_id': id }, { '$set': { 'companyInfo.status': 'activated' } },
+                Company.update({ '_id': id }, { '$set': { 'companyInfo.status': status } },
                     function(err) {
                         if (err) {
                             console.log(err);
@@ -395,7 +314,6 @@ app.put('/activecompanystatus/:id', function(req, res) {
 app.put('/company/:id', function(req, res) {
 
     let id = req.params.id;
-    console.log(id);
     let registrationno = req.body.registrationno;
     let companyName = req.body.companyName;
     let faxno = req.body.faxno;
@@ -433,12 +351,9 @@ app.put('/company/:id', function(req, res) {
 })
 
 
-
-
 app.delete('/company/:id', function(req, res) {
 
     let id = req.params.id;
-    console.log(id);
     async.series([
         function(callback) {
 
@@ -469,7 +384,6 @@ app.delete('/company/:id', function(req, res) {
         }
     })
 })
-
 
 
 var server = app.listen(8090, function() {
