@@ -1,0 +1,46 @@
+<!--
+<form name="myForm">
+    <table>
+        <tr>
+            <td>Email</td>
+            <td><input type="text" name="email" ng-model="email" required></td>
+            <td><span ng-show="myForm.email.$touched && myForm.email.$invalid">Oops! Email field is required.</span></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" name="password" ng-model="password" required></td>
+            <td><span ng-show="myForm.password.$touched && myForm.password.$invalid">Oops! Password field is required.</span></td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" ng-click="submit()" ng-disabled="myForm.$invalid || myForm.$pristine" />
+            </td>
+        </tr>
+    </table>
+</form>-->
+
+<div class="container">
+    <h2>Login Form</h2>
+    <form class="form-horizontal" name="myForm">
+        <div class="form-group" ng-class="{'has-error':myForm.email.$touched && myForm.email.$invalid}">
+            <label class="control-label col-sm-2" for="email">Email:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="email" placeholder="Enter Email" name="email" ng-model="email" required>
+            </div>
+            <span class="help-block" ng-show="myForm.email.$error.required && myForm.email.$touched" style="color:red">Oops! Email field is required.</span>
+
+        </div>
+        <div class="form-group" ng-class="{'has-error':myForm.password.$touched && myForm.password.$invalid}">
+            <label class="control-label col-sm-2" for="address">Password:</label>
+            <div class="col-sm-3">
+                <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" ng-model="password" required>
+            </div>
+            <span class="help-block" ng-show="myForm.password.$error.required && myForm.password.$touched" style="color:red">Oops! Password field is required.</span>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" ng-click="submit()" ng-disabled="myForm.$invalid || myForm.$pristine">Login</button>
+            </div>
+        </div>
+    </form>
+</div>

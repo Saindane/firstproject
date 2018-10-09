@@ -1,0 +1,80 @@
+<div class="container-fluid">
+    <h1>User Management page </h1>
+    <div class="container-fluid" align="right">
+        <button ng-click="logout()" class="btn btn-info">Logout</button>
+    </div>
+    <div class="container">
+        <form class="form-horizontal" name="myForm">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="username">UserName:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="username" placeholder="Enter UserName" name="username" ng-model="username" required>
+                    <span class="hint" ng-show="myForm.username.$error.required || myForm.username.$invalid" style="color:red">Hint: UserName field is required</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="address">Address:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address" ng-model="address" required>
+                    <span class="hint" ng-show="myForm.address.$error.required || myForm.address.$invalid" style="color:red">Hint:Address field is required</span>
+                </div>
+
+            </div>
+            <div class="form-group" ng-hide="hideme">
+                <label class="control-label col-sm-2" for="email">Email:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="email" placeholder="Enter Email" name="email" ng-model="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+                    <span class="hint" ng-show="myForm.email.$error.required || myForm.email.$invalid" style="color:red">Hint:abc@text.com</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="password">Password:</label>
+                <div class="col-sm-3">
+                    <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" ng-model="password" required>
+                    <span class="hint" ng-show="myForm.password.$error.required || myForm.password.$invalid" style="color:red">Password field is required.</span>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" ng-click="adduser()" ng-disabled="myForm.$invalid || myForm.$pristine" ng-hide="hidebutton">Adduser</button>
+                    <button type="submit" class="btn btn-default" ng-click="updateuser()" ng-if="value" ng-disabled="myForm.$invalid">Updateuser</button>
+                </div>
+            </div>
+    </div>
+    </form>
+</div>
+
+<div class="container-fluid">
+    <table class="table table-bordered" ng-if="userlist[0].length > 0">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>UserName</th>
+                <th>Address</th>
+                <th>Email</th>
+                <!--<th>Password</th>-->
+                <th>status</th>
+                <th colspan="4">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(key,value) in userlist[0]">
+                <td>{{value._id}}</td>
+                <td>{{value.userInfo.userName}}</td>
+                <td>{{value.userInfo.address}}</td>
+                <td>{{value.email}}</td>
+                <!--<td>{{value.password}}</td>-->
+                <td>{{value.status}}</td>
+                <td><button class="btn" id="delete" ng-click="remove(value._id)"><i class="fa fa-close"></i> Delete</button></td>
+                <td><button class="btn" id="edit" ng-click="edit(value.email)"><i class="fa fa-pencil"></i> Edit</button></td>
+                <td><button class="btn" id="deactivate" ng-click="deactivate(value._id)"><i class="fa fa-window-close"></i> Deactivate</button></td>
+                <td><button class="btn" id="activate" ng-click="activate(value._id)"><i class="fa fa-check"></i> Activate</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <br>
+    <a href="#!companies" class="btn btn-info" role="button">Companies Page</a>
+</div>
