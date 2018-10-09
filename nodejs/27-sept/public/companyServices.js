@@ -24,4 +24,8 @@ app.service("companyServices", ["$http", '$rootScope', function($http, $rootScop
         return $http.delete('/company/' + id);
     }
 
+    this.logout = function() {
+        return $http.get('/logout');
+    }
+
 }]);

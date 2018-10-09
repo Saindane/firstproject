@@ -25,5 +25,9 @@ app.service("userServices", ["$http", '$rootScope', function($http, $rootScope) 
         return $http.delete('/user/' + id);
     }
 
+    this.logout = function() {
+        return $http.get('/logout');
+    }
+
 
 }]);

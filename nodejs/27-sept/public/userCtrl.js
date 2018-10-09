@@ -108,6 +108,16 @@ app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', '$lo
 
     };
 
+    $scope.logout = function() {
+        userServices.logout().then(function(response) {
+                if (response.data == '/') {
+                    $location.path(response.data);
+                }
+            },
+            function(error) {
+                $location.path('/error');
+            });
+    }
 
 
 }]);

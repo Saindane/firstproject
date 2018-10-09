@@ -2,10 +2,14 @@ var express = require('express');
 var async = require('async');
 const User = require('./userSchema');
 const Company = require('./companySchema');
-
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var app = express();
 const mongoose = require('mongoose');
+
 app.use(express.json());
+app.use(cookieParser());
+app.use(session({ key: 'user_id', secret: 'secretkey', saveUninitialized: true, resave: true, cookie: { maxAge: 3600000 } }));
 
 mongoose.connect('mongodb://localhost:27017/appSchema');
 var db = mongoose.connection;
@@ -16,14 +20,23 @@ db.once('open', function() { console.log("Connected to MongoDb"); })
 
 db.on('error', function(err) { console.log(err); })
 
+app.use('/login', (req, res, next) => {
+    if (req.cookies.user_id && !req.session.email) {
+        res.clearCookie('user_id');
+    }
+    next();
+});
+
+
+//This api for login check
 app.post('/login', function(req, res) {
 
     async.series([
         function(callback) {
             User.find({ $and: [{ 'email': req.body.email }, { 'password': req.body.password }] }, function(err, docs) {
                 if (docs.length > 0) {
-                    callback(null, 'user');
-
+                    req.session.email = req.body.email;
+                    res.redirect('/checksession');
                 } else {
                     callback("Username and Password not match")
                 }
@@ -39,7 +52,27 @@ app.post('/login', function(req, res) {
     })
 })
 
+//session checkapi
+app.get('/checksession', function(req, res) {
+    if (req.session.email && req.cookies.user_id) {
+        res.status(200).send('user');
+    } else {
+        res.send('/');
+    }
+})
 
+//This api for logout
+app.get('/logout', (req, res) => {
+    if (req.session.email && req.cookies.user_id) {
+        req.session.destroy();
+        res.send('/');
+    } else {
+        res.send('/');
+    }
+});
+
+
+//This api for display all users
 app.get('/user', function(req, res) {
 
     async.series([
@@ -57,7 +90,7 @@ app.get('/user', function(req, res) {
     })
 })
 
-
+//This api for display singleuser for updation
 app.get('/user/:email', function(req, res) {
 
     var emailparam = req.params.email;
@@ -78,7 +111,7 @@ app.get('/user/:email', function(req, res) {
 })
 
 
-
+//This api for add single user in mongoose
 app.post('/user', function(req, res) {
 
     async.series([
@@ -111,7 +144,7 @@ app.post('/user', function(req, res) {
     })
 })
 
-
+//This api for updation of userInformation
 app.put('/user/:email', function(req, res) {
 
 
@@ -154,7 +187,7 @@ app.put('/user/:email', function(req, res) {
         })
 })
 
-
+//This api for you want to make status activated or deactivate
 app.put('/status/:id', function(req, res) {
 
     let id = req.params.id;
@@ -191,6 +224,7 @@ app.put('/status/:id', function(req, res) {
         })
 })
 
+//This api for delection of user from mongoose
 app.delete('/user/:id', function(req, res) {
 
         let id = req.params.id;
@@ -225,7 +259,7 @@ app.delete('/user/:id', function(req, res) {
         })
     })
     //---company routes------
-
+    //This api for give all companies information
 app.get('/companies', function(req, res) {
 
     async.series([
@@ -243,6 +277,7 @@ app.get('/companies', function(req, res) {
     })
 })
 
+//This api for add single company into mongoose
 app.post('/company', function(req, res) {
 
     let comapny = new Company(req.body);
@@ -255,6 +290,7 @@ app.post('/company', function(req, res) {
     })
 })
 
+//This api for get single company information for updation
 app.get('/company/:id', function(req, res) {
 
     let id = req.params.id;
@@ -274,43 +310,44 @@ app.get('/company/:id', function(req, res) {
     })
 })
 
+//This api for you want to make status activated or deactivate
 app.put('/companystatus/:id', function(req, res) {
 
-    let id = req.params.id;
-    let status = req.body.status;
+        let id = req.params.id;
+        let status = req.body.status;
 
-    async.series([
-            function(callback) {
-                Company.find({ '_id': id },
-                    function(err, docs) {
-                        if (docs.length > 0) {
-                            callback()
-                        } else {
-                            callback('Data not found to Update');
-                        }
-                    })
-            },
-            function(callback) {
-                Company.update({ '_id': id }, { '$set': { 'companyInfo.status': status } },
-                    function(err) {
-                        if (err) {
-                            console.log(err);
-                            return;
-                        } else {
-                            callback(null, 'CompanyStatus is updated')
-                        }
-                    })
-            }
-        ],
-        function(error, data) {
-            if (error) {
-                res.send(error);
-            } else {
-                res.send(data[1]);
-            }
-        })
-})
-
+        async.series([
+                function(callback) {
+                    Company.find({ '_id': id },
+                        function(err, docs) {
+                            if (docs.length > 0) {
+                                callback()
+                            } else {
+                                callback('Data not found to Update');
+                            }
+                        })
+                },
+                function(callback) {
+                    Company.update({ '_id': id }, { '$set': { 'companyInfo.status': status } },
+                        function(err) {
+                            if (err) {
+                                console.log(err);
+                                return;
+                            } else {
+                                callback(null, 'CompanyStatus is updated')
+                            }
+                        })
+                }
+            ],
+            function(error, data) {
+                if (error) {
+                    res.send(error);
+                } else {
+                    res.send(data[1]);
+                }
+            })
+    })
+    //This api for update the company information
 app.put('/company/:id', function(req, res) {
 
     let id = req.params.id;
@@ -350,7 +387,7 @@ app.put('/company/:id', function(req, res) {
         })
 })
 
-
+//This api for delete companyInformation from mongoose
 app.delete('/company/:id', function(req, res) {
 
     let id = req.params.id;

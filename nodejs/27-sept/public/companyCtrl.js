@@ -102,5 +102,15 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices'
         }
     };
 
+    $scope.logout = function() {
+        companyServices.logout().then(function(response) {
+                if (response.data == '/') {
+                    $location.path(response.data);
+                }
+            },
+            function(error) {
+                $location.path('/error');
+            });
+    }
 
 }]);
