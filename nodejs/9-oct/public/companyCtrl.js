@@ -1,4 +1,4 @@
-app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices', '$location', function($scope, $http, $uibModal, companyServices, $location) {
+app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices', '$location', '$cookies', function($scope, $http, $uibModal, companyServices, $location, $cookies) {
 
     var updatedData = {};
     var _id;
@@ -105,6 +105,7 @@ app.controller("companyCtrl", ['$scope', '$http', '$uibModal', 'companyServices'
     $scope.logout = function() {
         companyServices.logout().then(function(response) {
                 if (response.data == '/') {
+                    $cookies.remove('auth');
                     $location.path(response.data);
                 }
             },

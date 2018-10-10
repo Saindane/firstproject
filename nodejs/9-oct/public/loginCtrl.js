@@ -1,4 +1,4 @@
-app.controller("loginCtrl", ['$scope', '$http', '$location', function($scope, $http, $location) {
+app.controller("loginCtrl", ['$scope', '$http', '$location', 'myFactory', function($scope, $http, $location, myFactory) {
 
     $scope.submit = function submit() {
         $scope.data = {};
@@ -6,15 +6,6 @@ app.controller("loginCtrl", ['$scope', '$http', '$location', function($scope, $h
         $scope.data.password = $scope.password;
         console.log($scope.email);
         console.log($scope.password);
-        $http.post('/login', $scope.data).then(function(response) {
-            console.log(response);
-            if (response.data == 'user') {
-                console.log(response.data);
-                $location.path(response.data);
-            } else {
-                alert("email and password not match")
-                $location.path('/');
-            }
-        });
+        myFactory.doLogin($scope.data);
     }
 }]);

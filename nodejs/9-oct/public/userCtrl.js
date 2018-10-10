@@ -1,4 +1,4 @@
-app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', '$location', function($scope, $http, $uibModal, userServices, $location) {
+app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', '$location', '$cookies', function($scope, $http, $uibModal, userServices, $location, $cookies) {
 
     var updatedData = {};
     var emailparam;
@@ -111,6 +111,7 @@ app.controller("userCtrl", ['$scope', '$http', '$uibModal', 'userServices', '$lo
     $scope.logout = function() {
         userServices.logout().then(function(response) {
                 if (response.data == '/') {
+                    $cookies.remove('auth');
                     $location.path(response.data);
                 }
             },
